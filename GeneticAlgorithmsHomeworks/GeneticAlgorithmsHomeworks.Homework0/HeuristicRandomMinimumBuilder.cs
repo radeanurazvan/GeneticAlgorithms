@@ -53,14 +53,9 @@ namespace GeneticAlgorithmsHomeworks.Homework0
             return currentMinimum;
         }
 
-        private double TestMinimum(double minimum, double currentValue)
+        private static double TestMinimum(double minimum, double currentValue)
         {
-            if (currentValue < minimum)
-            {
-                return currentValue;
-            }
-
-            return minimum;
+            return currentValue < minimum ? currentValue : minimum;
         }
     }
 }

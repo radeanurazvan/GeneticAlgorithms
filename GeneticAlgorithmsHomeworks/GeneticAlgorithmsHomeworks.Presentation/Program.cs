@@ -1,4 +1,5 @@
 ﻿using GeneticAlgorithmsHomeworks.Homework0;
+using GeneticAlgorithmsHomeworks.Homework1;
 
 namespace GeneticAlgorithmsHomeworks.Presentation
 {
@@ -6,7 +7,7 @@ namespace GeneticAlgorithmsHomeworks.Presentation
     {
         public static void Main(string[] args)
         {
-            var homeworkPresenter = new HeuristicMinimumPresenter();
+            var homeworkPresenter = new HillClimbPresenter();
 
             homeworkPresenter.Present();
         }

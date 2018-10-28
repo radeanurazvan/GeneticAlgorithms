@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.Core", "GeneticAlgorithmsHomeworks.Core\GeneticAlgorithmsHomeworks.Core.csproj", "{433A7CA0-7C82-438B-92A1-0C5F847BBF78}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithmsHomeworks.Homework1", "GeneticAlgorithmsHomeworks.Homework1\GeneticAlgorithmsHomeworks.Homework1.csproj", "{84049110-2582-4982-9839-B05D36B6CECD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{433A7CA0-7C82-438B-92A1-0C5F847BBF78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{433A7CA0-7C82-438B-92A1-0C5F847BBF78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{433A7CA0-7C82-438B-92A1-0C5F847BBF78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84049110-2582-4982-9839-B05D36B6CECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84049110-2582-4982-9839-B05D36B6CECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84049110-2582-4982-9839-B05D36B6CECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84049110-2582-4982-9839-B05D36B6CECD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
