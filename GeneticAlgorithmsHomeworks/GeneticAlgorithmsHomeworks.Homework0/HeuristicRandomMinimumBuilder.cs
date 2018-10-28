@@ -1,7 +1,7 @@
 ﻿using System;
 using GeneticAlgorithmsHomeworks.Function;
 
-namespace GeneticAlgorithmsHomeworks.Homework1
+namespace GeneticAlgorithmsHomeworks.Homework0
 {
     public class HeuristicRandomMinimumBuilder
     {

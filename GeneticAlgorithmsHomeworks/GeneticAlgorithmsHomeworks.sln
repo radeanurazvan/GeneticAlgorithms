@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithmsHomeworks.Function", "GeneticAlgorithmsHomeworks.DimensionalFunction\GeneticAlgorithmsHomeworks.Function.csproj", "{E0870D82-352B-4D57-8106-33F18658CF97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.Function", "GeneticAlgorithmsHomeworks.DimensionalFunction\GeneticAlgorithmsHomeworks.Function.csproj", "{E0870D82-352B-4D57-8106-33F18658CF97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithmsHomeworks.Homework1", "GeneticAlgorithmsHomeworks.Homework1\GeneticAlgorithmsHomeworks.Homework1.csproj", "{209F1268-C301-4F71-A813-0342F60889C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.Homework0", "GeneticAlgorithmsHomeworks.Homework0\GeneticAlgorithmsHomeworks.Homework0.csproj", "{209F1268-C301-4F71-A813-0342F60889C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithmsHomeworks.Presentation", "GeneticAlgorithmsHomeworks.Presentation\GeneticAlgorithmsHomeworks.Presentation.csproj", "{219C144A-A37A-49C1-B08F-3CD9DE1CCD7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.Presentation", "GeneticAlgorithmsHomeworks.Presentation\GeneticAlgorithmsHomeworks.Presentation.csproj", "{219C144A-A37A-49C1-B08F-3CD9DE1CCD7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithmsHomeworks.Core", "GeneticAlgorithmsHomeworks.Core\GeneticAlgorithmsHomeworks.Core.csproj", "{433A7CA0-7C82-438B-92A1-0C5F847BBF78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.Core", "GeneticAlgorithmsHomeworks.Core\GeneticAlgorithmsHomeworks.Core.csproj", "{433A7CA0-7C82-438B-92A1-0C5F847BBF78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

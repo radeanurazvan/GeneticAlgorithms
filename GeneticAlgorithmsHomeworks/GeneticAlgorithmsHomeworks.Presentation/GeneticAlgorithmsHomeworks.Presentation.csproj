@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GeneticAlgorithmsHomeworks.Homework1\GeneticAlgorithmsHomeworks.Homework1.csproj" />
+    <ProjectReference Include="..\GeneticAlgorithmsHomeworks.Homework0\GeneticAlgorithmsHomeworks.Homework0.csproj" />
   </ItemGroup>
 
 </Project>

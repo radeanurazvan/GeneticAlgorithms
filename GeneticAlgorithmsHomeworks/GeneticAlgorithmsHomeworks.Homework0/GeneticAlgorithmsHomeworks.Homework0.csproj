@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GeneticAlgorithmsHomeworks.Core\GeneticAlgorithmsHomeworks.Core.csproj" />
     <ProjectReference Include="..\GeneticAlgorithmsHomeworks.DimensionalFunction\GeneticAlgorithmsHomeworks.Function.csproj" />
   </ItemGroup>
 
