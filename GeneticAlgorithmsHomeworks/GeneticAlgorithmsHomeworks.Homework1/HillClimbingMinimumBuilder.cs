@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GeneticAlgorithmsHomeworks.Core;
 using GeneticAlgorithmsHomeworks.Function;
+using GeneticAlgorithmsHomeworks.Homework1.Improvement;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace GeneticAlgorithmsHomeworks.Homework1
@@ -10,7 +12,8 @@ namespace GeneticAlgorithmsHomeworks.Homework1
     public class HillClimbingMinimumBuilder
     {
         private int iterations = 1;
-        private DimensionalFunction function; 
+        private DimensionalFunction function;
+        private ImprovementStrategy strategy;
 
         public HillClimbingMinimumBuilder WithIterations(int iterations)
         {
@@ -29,31 +32,51 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             return this;
         }
 
+        public HillClimbingMinimumBuilder WithImprovementStrategy(ImprovementStrategy strategy)
+        {
+            this.strategy = strategy ?? throw new ArgumentNullException("The hill climb minimum builder needs a non-null imporvement strategy to work with!");
+
+            return this;
+        }
+
         public double Build()
         {
             var minimum = double.MaxValue;
 
             for (var currentIteration = 1; currentIteration <= iterations; currentIteration++)
             {
-                var initialState =
-                    DomainHelper.RandomNumbersInDomainRange(function.GetDomain(), function.GetDimension());
-                var solution = function.GetValue(initialState);
+                var randomState =
+                    DomainHelper.RandomNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition());
 
-                var neighbourhood = GetNeighbourhood(initialState);
+                var neighboursExhausted = false;
 
+                while (!neighboursExhausted)
+                {
+                    var neighbourhood = GetNeighbourhood(randomState);
+                    var improvement = strategy.PickImprovement(neighbourhood, function, minimum);
+
+                    if (improvement == null)
+                    {
+                        neighboursExhausted = true;
+                    }
+                    else
+                    {
+                        minimum = function.GetValue(improvement);
+                    }
+                }
             }
 
             return minimum;
         }
 
-        private static IEnumerable<IEnumerable<double>> GetNeighbourhood(IEnumerable<double> subject)
+        private static IEnumerable<DimensionSet> GetNeighbourhood(IEnumerable<double> subject)
         {
             return subject.SelectMany((vectorValue, index) =>
             {
-                var bitRepresentation = BitConverter.DoubleToInt64Bits(vectorValue);
+                var bitRepresentation = BinaryRepresentation.FromDouble(vectorValue);
                 var allAlterations = GetAlteredRepresentations(bitRepresentation);
 
-                var neighbourhood = new List<IEnumerable<double>>();
+                var neighbourhood = new List<DimensionSet>();
                 foreach (var alteration in allAlterations)
                 {
                     var neighbour = subject.ToList();
@@ -61,31 +84,37 @@ namespace GeneticAlgorithmsHomeworks.Homework1
                     var decodedAlteration = DecodeBinaryRepresentation(alteration);
                     neighbour[index] = decodedAlteration;
 
-                    neighbourhood.Add(neighbour);
+                    neighbourhood.Add(new DimensionSet(neighbour));
                 }
 
                 return neighbourhood;
-            });
+            }).ToList();
         }
 
-        private static IEnumerable<long> GetAlteredRepresentations(long bitRepresentation)
+        private static IEnumerable<BinaryRepresentation> GetAlteredRepresentations(BinaryRepresentation bitRepresentation)
         {
-            var stringRepresentation = bitRepresentation.ToString();
+            var stringRepresentation = bitRepresentation.Value;
 
             return stringRepresentation.Select((bit, index) =>
             {
                 var alteredBit = bit == '0' ? '1' : '0';
 
-                var alteredRepresentation = new StringBuilder(bitRepresentation.ToString());
+                var alteredRepresentation = new StringBuilder(bitRepresentation.Value);
                 alteredRepresentation[index] = alteredBit;
 
-                return Convert.ToInt64(alteredRepresentation.ToString());
+                return BinaryRepresentation.Create(alteredRepresentation.ToString());
             });
         }
 
-        private static double DecodeBinaryRepresentation(long binaryRepresentation)
+        private static double DecodeBinaryRepresentation(BinaryRepresentation binaryRepresentation)
         {
-            var stringRepresentation = binaryRepresentation.ToString();
+            long v = 0;
+            for (int i = binaryRepresentation.Value.Length - 1; i >= 0; i--) v = (v << 1) + (binaryRepresentation.Value[i] - '0');
+            double d = BitConverter.ToDouble(BitConverter.GetBytes(v), 0);
+
+            return d;
+
+            /*var stringRepresentation = binaryRepresentation.Value;
             var representationLength = stringRepresentation.Length;
 
             var nBytes = (int)Math.Ceiling(representationLength / 8m);
@@ -93,9 +122,9 @@ namespace GeneticAlgorithmsHomeworks.Homework1
                 Enumerable.Range(0, nBytes)
                     .Select(i => stringRepresentation.Substring(8 * i, Math.Min(8, representationLength- 8 * i)));
 
-            var byteArray = bytesAsStrings.Select(b => Convert.ToByte(b)).ToArray();
+            var byteArray = bytesAsStrings.Select(b => Convert.ToSByte(b)).ToArray();
 
-            return Convert.ToDouble(byteArray);
+            return Convert.ToDouble(byteArray); */
         }
     }
 }

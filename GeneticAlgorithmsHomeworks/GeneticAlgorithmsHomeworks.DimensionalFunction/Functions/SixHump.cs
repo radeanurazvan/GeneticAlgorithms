@@ -8,17 +8,17 @@ namespace GeneticAlgorithmsHomeworks.Function
     {
         public override Domain GetDomain()
         {
-            return DimensionalDomain.FromDimension(GetDimension())
+            return DimensionalDomain.FromDimension(GetDimensionDefinition())
                 .WithDefinition(new DomainDefinition(-3, 3))
                 .WithDefinition(new DomainDefinition(-2, 2));
         }
 
-        public override DimensionDefinition GetDimension()
+        public override DimensionDefinition GetDimensionDefinition()
         {
             return new DimensionDefinition(2);
         }
 
-        public override double GetValue(IEnumerable<double> tuple)
+        public override double GetValue(DimensionSet tuple)
         {
             var firstParam = tuple.ElementAt(0);
             var secondParam = tuple.ElementAt(1);

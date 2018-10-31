@@ -6,8 +6,8 @@ namespace GeneticAlgorithmsHomeworks.Function
     {
         public abstract Domain GetDomain();
 
-        public abstract DimensionDefinition GetDimension();
+        public abstract DimensionDefinition GetDimensionDefinition();
 
-        public abstract double GetValue(IEnumerable<double> tuple);
+        public abstract double GetValue(DimensionSet values);
     }
 }

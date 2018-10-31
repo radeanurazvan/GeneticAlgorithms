@@ -1,6 +1,7 @@
 ﻿using System;
 using GeneticAlgorithmsHomeworks.Core;
 using GeneticAlgorithmsHomeworks.Function;
+using GeneticAlgorithmsHomeworks.Homework1.Improvement;
 
 namespace GeneticAlgorithmsHomeworks.Homework1
 {
@@ -10,7 +11,8 @@ namespace GeneticAlgorithmsHomeworks.Homework1
         {
             var minimum = new HillClimbingMinimumBuilder()
                 .WithFunction(new DeJong())
-                .WithIterations(5)
+                .WithIterations(1)
+                .WithImprovementStrategy(new BestImprovementStrategy())
                 .Build();
 
             Console.WriteLine(minimum);

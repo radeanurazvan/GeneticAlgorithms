@@ -11,12 +11,12 @@ namespace GeneticAlgorithmsHomeworks.Function
             return new UniversalDomain(-500, 500);
         }
 
-        public override DimensionDefinition GetDimension()
+        public override DimensionDefinition GetDimensionDefinition()
         {
             return new DimensionDefinition(8);
         }
 
-        public override double GetValue(IEnumerable<double> tuple)
+        public override double GetValue(DimensionSet tuple)
         {
             return tuple.Sum(x => SingleItemExpressionValue(x));
         }

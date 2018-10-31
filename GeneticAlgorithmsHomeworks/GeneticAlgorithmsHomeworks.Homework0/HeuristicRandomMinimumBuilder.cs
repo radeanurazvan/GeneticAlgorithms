@@ -43,7 +43,7 @@ namespace GeneticAlgorithmsHomeworks.Homework0
             for (var currentTry = 1.0; currentTry <= randomTriesCount; currentTry += step)
             {
                 var functionParameters =
-                    DomainHelper.RandomNumbersInDomainRange(function.GetDomain(), function.GetDimension());
+                    DomainHelper.RandomNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition());
 
                 var functionValue = function.GetValue(functionParameters);
 
