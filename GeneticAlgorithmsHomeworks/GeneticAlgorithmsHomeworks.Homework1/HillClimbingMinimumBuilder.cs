@@ -5,7 +5,6 @@ using System.Text;
 using GeneticAlgorithmsHomeworks.Core;
 using GeneticAlgorithmsHomeworks.Function;
 using GeneticAlgorithmsHomeworks.Homework1.Improvement;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GeneticAlgorithmsHomeworks.Homework1
 {
@@ -69,7 +68,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             return minimum;
         }
 
-        private static IEnumerable<DimensionSet> GetNeighbourhood(IEnumerable<double> subject)
+        private static IEnumerable<DimensionSet> GetNeighbourhood(DimensionSet subject)
         {
             return subject.SelectMany((vectorValue, index) =>
             {
