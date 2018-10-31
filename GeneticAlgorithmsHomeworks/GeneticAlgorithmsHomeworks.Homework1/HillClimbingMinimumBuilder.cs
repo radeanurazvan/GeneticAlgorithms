@@ -95,15 +95,33 @@ namespace GeneticAlgorithmsHomeworks.Homework1
         {
             var stringRepresentation = bitRepresentation.Value;
 
-            return stringRepresentation.Select((bit, index) =>
-            {
-                var alteredBit = bit == '0' ? '1' : '0';
+            var byteChunks = stringRepresentation.ChunksOfSize(8);
 
+            return byteChunks.Select((chunk, index) =>
+            {
+                var chunkIndexStart = index * 8;
+
+                var alteredBit = chunk[7] == '0' ? '1' : '0';
+
+                var alteredChunk = new StringBuilder(chunk);
+                alteredChunk[7] = alteredBit;
+                    
                 var alteredRepresentation = new StringBuilder(bitRepresentation.Value);
-                alteredRepresentation[index] = alteredBit;
+                alteredRepresentation.Remove(chunkIndexStart, 8);
+                alteredRepresentation.Insert(chunkIndexStart, alteredChunk);
 
                 return BinaryRepresentation.Create(alteredRepresentation.ToString());
             });
+
+//            return stringRepresentation.Select((bit, index) =>
+//            {
+//                var alteredBit = bit == '0' ? '1' : '0';
+//
+//                var alteredRepresentation = new StringBuilder(bitRepresentation.Value);
+//                alteredRepresentation[index] = alteredBit;
+//
+//                return BinaryRepresentation.Create(alteredRepresentation.ToString());
+//            });
         }
 
         private static double DecodeBinaryRepresentation(BinaryRepresentation binaryRepresentation)

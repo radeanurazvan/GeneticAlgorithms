@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GeneticAlgorithmsHomeworks.Function
 {
@@ -8,6 +9,11 @@ namespace GeneticAlgorithmsHomeworks.Function
 
         public abstract DimensionDefinition GetDimensionDefinition();
 
-        public abstract double GetValue(DimensionSet values);
+        protected abstract double GetValueCore(DimensionSet tuple);
+
+        public double GetValue(DimensionSet tuple)
+        {
+            return Math.Round(GetValueCore(tuple), 5);
+        }
     }
 }

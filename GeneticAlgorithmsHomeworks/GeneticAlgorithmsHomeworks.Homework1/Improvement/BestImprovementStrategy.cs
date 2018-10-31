@@ -8,12 +8,12 @@ namespace GeneticAlgorithmsHomeworks.Homework1.Improvement
     {
         public override DimensionSet PickImprovement(IEnumerable<DimensionSet> neighbourhood, DimensionalFunction function, double currentMinimum)
         {
-            var bestImprovement = neighbourhood.First();
+            DimensionSet bestImprovement = null;
 
             foreach (var neighbour in neighbourhood)
             {
                 var value = function.GetValue(neighbour);
-                if (!(value < currentMinimum))
+                if (currentMinimum <= value)
                 {
                     continue;
                 }

@@ -18,7 +18,7 @@ namespace GeneticAlgorithmsHomeworks.Function
             return new DimensionDefinition(2);
         }
 
-        public override double GetValue(DimensionSet tuple)
+        protected override double GetValueCore(DimensionSet tuple)
         {
             var firstParam = tuple.ElementAt(0);
             var secondParam = tuple.ElementAt(1);
