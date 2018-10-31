@@ -8,8 +8,10 @@ namespace GeneticAlgorithmsHomeworks.Presentation
         public static void Main(string[] args)
         {
             var homeworkPresenter = new HillClimbPresenter();
+            var simulatedAnnealingPresenter = new SimulatedAnnealingPresenter();
 
-            homeworkPresenter.Present();
+            //homeworkPresenter.Present();
+            simulatedAnnealingPresenter.Present();
         }
 
     }
