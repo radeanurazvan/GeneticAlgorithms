@@ -11,7 +11,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
         private readonly double alpha = 0.99;
         private DimensionalFunction function;
         private readonly double minimumTemperature = 0.001;
-        private double temperature = 1;
+        private double startingTemperature = 1;
 
         private int precision = 3;
 
@@ -22,7 +22,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
                 throw new ArgumentException("Temperature should not be negative!");
             }
 
-            this.temperature = temperature;
+            this.startingTemperature = temperature;
             return this;
         }
 
@@ -36,6 +36,9 @@ namespace GeneticAlgorithmsHomeworks.Homework1
 
         public double Build()
         {
+            var temperature = startingTemperature;
+            function.Precision = precision;
+
             var minimum = double.MaxValue;
             var currentState =
                 DomainHelper.RandomBinaryNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition(), precision);
