@@ -68,14 +68,14 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             return minimum;
         }
 
-        private static IEnumerable<DimensionSet> GetNeighbourhood(DimensionSet subject)
+        private static IEnumerable<DimensionSet<double>> GetNeighbourhood(DimensionSet<double> subject)
         {
             return subject.SelectMany((vectorValue, index) =>
             {
                 var bitRepresentation = BinaryRepresentation.FromDouble(vectorValue);
                 var allAlterations = GetAlteredRepresentations(bitRepresentation);
 
-                var neighbourhood = new List<DimensionSet>();
+                var neighbourhood = new List<DimensionSet<double>>();
                 foreach (var alteration in allAlterations)
                 {
                     var neighbour = subject.ToList();
@@ -83,7 +83,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
                     var decodedAlteration = DecodeBinaryRepresentation(alteration);
                     neighbour[index] = decodedAlteration;
 
-                    neighbourhood.Add(new DimensionSet(neighbour));
+                    neighbourhood.Add(new DimensionSet<double>(neighbour));
                 }
 
                 return neighbourhood;

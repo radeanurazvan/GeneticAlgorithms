@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace GeneticAlgorithmsHomeworks.Function
 {
-    public class DimensionSet : IEnumerable<double>
+    public class DimensionSet<T> : IEnumerable<T>
     {
-        private readonly ICollection<double> values = new List<double>();
+        private readonly ICollection<T> values = new List<T>();
 
-        public DimensionSet(IEnumerable<double> set)
+        public DimensionSet(IEnumerable<T> set)
         {
             values = set.ToList();
         }
 
-        public IEnumerator<double> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return values.GetEnumerator();
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using GeneticAlgorithmsHomeworks.Core;
 using GeneticAlgorithmsHomeworks.Function;
 using GeneticAlgorithmsHomeworks.Homework1.Improvement;
@@ -12,8 +11,8 @@ namespace GeneticAlgorithmsHomeworks.Homework1
     {
         public void Present()
         {
-            var builder = new HillClimbingMinimumBuilder()
-                .WithIterations(5);
+            var builder = new HillClimbingBinaryMinimumBuilder()
+                .WithIterations(20);
 
             var functions = new List<DimensionalFunction>
             {
@@ -31,12 +30,12 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             }
         }
 
-        private void DisplayImprovement(HillClimbingMinimumBuilder builder, DimensionalFunction function)
+        private void DisplayImprovement(HillClimbingBinaryMinimumBuilder builder, DimensionalFunction function)
         {
             var firstImprovementValue = builder
                 .WithImprovementStrategy(new FirstImprovementStrategy())
                 .Build();
-            Console.WriteLine();
+            Console.WriteLine($"{function} first improvement: {firstImprovementValue}");
 
             using (var file = new StreamWriter(@"History.txt", true))
             {
@@ -46,6 +45,8 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             var bestImprovementValue = builder
                 .WithImprovementStrategy(new BestImprovementStrategy())
                 .Build();
+            Console.WriteLine($"{function} best improvement: {bestImprovementValue}");
+
 
             using (var file = new StreamWriter(@"History.txt", true))
             {

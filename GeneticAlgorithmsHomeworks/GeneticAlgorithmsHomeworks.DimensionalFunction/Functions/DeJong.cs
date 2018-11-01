@@ -12,10 +12,10 @@ namespace GeneticAlgorithmsHomeworks.Function
 
         public override DimensionDefinition GetDimensionDefinition()
         {
-            return new DimensionDefinition(2);
+            return new DimensionDefinition(5);
         }
 
-        protected override double GetValueCore(DimensionSet tuple)
+        protected override double GetValueCore(DimensionSet<double> tuple)
         {
             return tuple.Sum(x => x * x);
         }

@@ -57,7 +57,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             return minimum;
         }
 
-        private static DimensionSet GetNeighbour(DimensionSet subject)
+        private static DimensionSet<double> GetNeighbour(DimensionSet<double> subject)
         {
             var randomDimension = new Random().Next(0, subject.Count() - 1);
 
@@ -73,7 +73,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             var neighbour = subject.ToList();
             neighbour[randomDimension] = alteredDimension;
 
-            return new DimensionSet(neighbour);
+            return new DimensionSet<double>(neighbour);
         }
 
         private static double DecodeBinaryRepresentation(BinaryRepresentation binaryRepresentation)
