@@ -6,6 +6,11 @@ namespace GeneticAlgorithmsHomeworks.Function
 {
     public class SixHump : DimensionalFunction
     {
+        public SixHump()
+        {
+            DimensionLocked = true;
+        }
+
         public override Domain GetDomain()
         {
             return DimensionalDomain.FromDimension(GetDimensionDefinition())

@@ -10,7 +10,7 @@ namespace GeneticAlgorithmsHomeworks.Presentation
             var homeworkPresenter = new HillClimbPresenter();
             var simulatedAnnealingPresenter = new SimulatedAnnealingPresenter();
 
-//            homeworkPresenter.Present();
+            homeworkPresenter.Present();
             simulatedAnnealingPresenter.Present();
         }
 
