@@ -11,7 +11,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
     {
         public void Present()
         {
-            var builder = new SimulatedAnnealingBinaryMinimumBuilder()
+            var builder = new SimulatedAnnealingMinimumBuilder()
                 .WithStartingTemperature(1);
 
             var functions = new List<DimensionalFunction>
@@ -68,7 +68,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             }
         }
 
-        private void DisplayMinimum(SimulatedAnnealingBinaryMinimumBuilder builder, DimensionalFunction function)
+        private void DisplayMinimum(SimulatedAnnealingMinimumBuilder builder, DimensionalFunction function)
         {
             var minimumValue = builder.Build();
             Console.WriteLine($"{function} simulated annealing minimum: {minimumValue}");

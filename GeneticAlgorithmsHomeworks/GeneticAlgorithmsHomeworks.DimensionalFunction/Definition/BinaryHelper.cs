@@ -2,7 +2,7 @@
 using System.Linq;
 using GeneticAlgorithmsHomeworks.Core;
 using static System.Math;
-
+    
 namespace GeneticAlgorithmsHomeworks.Function
 {
     public class BinaryHelper

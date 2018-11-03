@@ -1,0 +1,182 @@
+1.Problema
+
+Cerinta problemei este aflarea minimului unor functii.
+
+2.Algoritmul utilizat
+
+Algoritmii utilizati in rezolvarea problemei sunt Hill climb (first improvement si best improvement) si Simulated annealing.
+Pseudecod Hill Climbing:
+ITERARE HC	begin
+		  t := 0
+		  initialize best
+			  repeat
+			    local := FALSE
+BEGIN HC		    select a candidate solution (bitstring) vc at random
+			    evaluate vc
+			    repeat
+			      vn := Improve(Neghborhood(vc))
+ 			      if eval(vn) is better than eval(vc)
+			        then vc := vn
+			        else local := TRUE
+END HC			    until local
+			    t := t + 1
+ 			    if vc is better than best
+			      then best := vc
+		  until t = MAX
+		end
+
+
+Pseudocod Simulated annealing first improvement:
+begin
+  t := 0
+  initialize the temperature T
+  select a current candidate solution (bitstring) vc at random
+  evaluate vc
+  repeat
+    repeat
+      select at random vn - a neighbor of vc
+      if eval(vn) is better than eval(vc)
+        then vc := vn
+        else if random[0,1) < exp(-|eval(vn)-eval(vc)|/T)
+          then vc := vn
+    until (termination-condition)
+    T := g(T; t) 
+    t := t + 1
+  until (halting-criterion)
+end
+
+Detalii de implementare Hill climb:
+	Numerele sunt reprezentate ca siruri de biti, encapsulate in clasa BinaryRepresentation. Numarul de biti este calculat dupa formula 
+	bitsNumber = log2(domainEnd-domainStart)*10^precision, unde domainEnd este capatul din dreapta al domeniului functiei, iar domainStart 
+	este capatul din stanga al domeniului. Precizia reprezinta numarul de zecimale cu care dorim sa lucram.
+	Pentru o functie de dimensiune n, o solutie va fi reprezentata de un sir de n* bitsNumber biti.
+
+	Deocodarea unei reprezentari binare este responsabilitatea metodei DecodeBinary din clasa BinaryHelper, care primeste drept input o 
+	reprezentare binara, o definitie de domeniu si o precizie. Metoda precizata transforma reprezentarea binara intr-un numar real, apoi
+	o transpune in domeniul dat ca parametru, prin formula :
+	x = (domainEnd - domainStart) * (realNumber / (2^bitsNumber - 1)) + domainStart
+
+	Evaluarea se face in HillClimbingMinimumBuilder care paseaza valoarea decodata la instanta de functie care va aplica expresia functiei
+	si va intoarce valoarea corespunzatoare.
+
+	Vecinii sunt generati prin negarea cate unui bit pentru fiecare dimensiune din starea initiala.
+
+	Initial alegem un o valoare multi-dimensionala formata din mai multe reprezentari binare random.
+
+	Cautarea de vecini se opreste:
+	a)fie la primul vecin care ofera o solutie mai buna decat minimul curent (cazult first improvement)
+	b)fie la vecinul care ofera cea mai buna solutie decat minimul curent (cazul best improvement)
+
+	Programul are loc dupa atingerea numarului N de iteratii specificate in instantierea lui HillClimbingMinimumBuilder.
+
+Detalii de implementare Simulated annealing first improvement:
+	Numerele sunt reprezentate ca siruri de biti, encapsulate in clasa BinaryRepresentation. Numarul de biti este calculat dupa formula 
+	bitsNumber = log2(domainEnd-domainStart)*10^precision, unde domainEnd este capatul din dreapta al domeniului functiei, iar domainStart 
+	este capatul din stanga al domeniului. Precizia reprezinta numarul de zecimale cu care dorim sa lucram.
+	Pentru o functie de dimensiune n, o solutie va fi reprezentata de un sir de n* bitsNumber biti.
+
+	Deocodarea unei reprezentari binare este responsabilitatea metodei DecodeBinary din clasa BinaryHelper, care primeste drept input o 
+	reprezentare binara, o definitie de domeniu si o precizie. Metoda precizata transforma reprezentarea binara intr-un numar real, apoi
+	o transpune in domeniul dat ca parametru, prin formula :
+	x = (domainEnd - domainStart) * (realNumber / (2^bitsNumber - 1)) + domainStart
+
+	Evaluarea se face in HillClimbingMinimumBuilder care paseaza valoarea decodata la instanta de functie care va aplica expresia functiei
+	si va intoarce valoarea corespunzatoare.
+
+	Vecinii sunt generati prin negarea cate unui bit pentru fiecare dimensiune din starea initiala.
+
+	Initial alegem un o valoare multi-dimensionala formata din mai multe reprezentari binare random.
+
+	Se alege temperatura initiala 1, iar coeficientul de inmultire este 0.99. Temperatura va scadea progresiv pana va ajunge la temperatura
+	minima, aleasa 0.01.
+
+	Programul se termina dupa ce temperatura devine mai mica decat 0.01
+3.Rezultate:
+Rezultatele sunt in urma a 30 de rulari.
+In cazul HillClimb au existat 30 de iteratii.
+
+Hill Climbing First Improvement:
+DeJong(5 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				0.303		2.812		15.37		
+MAXIM				11.285		21.818		75.401
+MEDIE				5.029		5.215		44.883
+DEVIATIE			2.457		12.475		17.249
+
+DeJong(10 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				1.542		2.348		17.094
+MAXIM				12.464		21.09		90.705
+MEDIE				4.815		7.421		41.835
+DEVIATIE			2.480		12.355		18.896
+
+DeJong(30 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				0.868		2.402		6.332
+MAXIM				14.026		25.496		75.838
+MEDIE				5.847		10.215		39.198
+DEVIATIE			3.344		13.158		17.200
+
+Rastrigin(5 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				18.556		28.924		54.791
+MAXIM				49.474		90.536		146.495
+MEDIE				34.974		40.551		91.561
+DEVIATIE			8.169		69.058		23.300
+
+Rastrigin(10 dimensiuni)	HillClimb FI	HillClimb BI	S. Annealing
+MINIM				5.956		29.568		43.726
+MAXIM				46.091		96.034		128.617
+MEDIE				31.819		51.229		94.243
+DEVIATIE			9.426		70.153		22.342
+
+Rastrigin(30 dimensiuni)	HillClimb FI	HillClimb BI	S. Annealing
+MINIM				10.577		39.872		46.182
+MAXIM				53.086		92.626		145.495
+MEDIE				31.372		61.613		83.322
+DEVIATIE			8.634		70.550		21.562
+
+Schwefel(5 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				-1552.965	-2950.62	-722.502
+MAXIM				0		0		858.054
+MEDIE				-1167.686	-1221.12	16.661
+DEVIATIE			2363.200	-2363.200	454.705
+
+Schwefel(10 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				-1635.567	-2868.056	-518.085
+MAXIM				0		0		728.965
+MEDIE				-1223.253	-921.216	111.492
+DEVIATIE			181.279		2410.435	382.851
+
+Schwefel(30 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				-1594.175	-3052.936	-709.223
+MAXIM				0		0		983.029
+MEDIE				-1124.509	-1621.612	51.786
+DEVIATIE			175.161		2408.044	416.016
+
+SixHump(5 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				-1.031		-2.062		-0.036
+MAXIM				0		0		119.945
+MEDIE				-0.926		-1.212		18.425
+DEVIATIE			0.099		1.918		30.886
+
+SixHump(10 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				-1.029		-2.05		-0.552
+MAXIM				0		0		93.911
+MEDIE				-9.959		-1.221		20.397
+DEVIATIE			0.0689		1.891		26.693
+
+SixHump(30 dimensiuni)		HillClimb FI	HillClimb BI	S. Annealing
+MINIM				-1.028		-2.06		-0.244
+MAXIM				0		0		48.97
+MEDIE				-0.917		-1.21		11.054
+DEVIATIE			0.120		1.832		12.572
+
+In cazul amanduror algoritmi am observat imbanatatirea calitatii solutiilor prin cresterea preciziei (chiar si de la 3 la 5).
+
+Pentru HillClimb, calitatea solutiei creste odata cu numarul de iteratii, dar aceasta dependinta devine nesemnificativa la peste 1000 de iteratii.
+
+Pentru Simulated Annealing, apropierea coeficientului de temperatura initiala cu o valoare mica face ca procentul cu care se scade temperatura
+la fiecare iteratie sa fie cat mai aproape de 1, obtinand totodata si rezultate mai bune. Cu cat temperatura scade mai greu, cu atat se obtin rezultate mai bune.
+Se pot gasi doua grafice in excelul atasat.
+
+4. Valorile prezentate mai sus ofera solutii mai bune pentru Hill Climb, dar o optimizare a algorimtului Simulated Annealing si alegerea unei temperaturi minime 
+mai mici va demonstra superioritatea algoritmului Simulated Annealing. Totodata, Simulated Annealing obtine rezultate intr-un timp mai scurt decat Hill Climb.
+
+	

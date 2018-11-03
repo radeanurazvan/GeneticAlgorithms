@@ -22,7 +22,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
 
             var dimensions = new List<int>{ 5, 10, 30 };
 
-            var builder = new HillClimbingBinaryMinimumBuilder()
+            var builder = new HillClimbingMinimumBuilder()
                 .WithIterations(20);
 
             var numberOfExecutions = 30;
@@ -31,14 +31,20 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             {
                 foreach (var dimensionalFunction in functions)
                 {
-                    var minimum = double.MaxValue;
-                    var maximum = 0d;
+                    var firstImprovementMinimum = double.MaxValue;
+                    var firstImprovementMaximum = 0d;
 
-                    var accumulated = 0d;
+                    var bestImprovementMinimum = double.MaxValue;
+                    var bestImprovementMaximum = 0d;
+
+                    var firstImprovementAccumulated = 0d;
+                    var bestImprovementAccumulated = 0d;
 
                     dimensionalFunction.TrySetDimension(dimension);
                     builder = builder.WithFunction(dimensionalFunction);
-                    var values = new List<double>();
+
+                    var firstImprovementValues = new List<double>();
+                    var bestImprovementValues = new List<double>();
 
                     for (var i = 1; i <= numberOfExecutions; i++)
                     {
@@ -46,36 +52,50 @@ namespace GeneticAlgorithmsHomeworks.Homework1
                         var firstImprovementValue = builder.WithImprovementStrategy(new FirstImprovementStrategy()).Build();
                         var bestImprovementValue = builder.WithImprovementStrategy(new BestImprovementStrategy()).Build();
 
-                        var currentValue = firstImprovementValue < bestImprovementValue ? firstImprovementValue : bestImprovementValue;
+                        firstImprovementAccumulated += firstImprovementValue;
+                        bestImprovementValue += bestImprovementValue;
 
-                        if (currentValue < minimum)
-                        {
-                            minimum = currentValue;
-                        }
+                        firstImprovementValues.Add(firstImprovementValue);
+                        bestImprovementValues.Add(bestImprovementValue);
 
-                        if (currentValue > maximum)
-                        {
-                            maximum = currentValue;
-                        }
+                        firstImprovementMinimum = firstImprovementValue < firstImprovementMinimum
+                            ? firstImprovementValue
+                            : firstImprovementMinimum;
+                        firstImprovementMaximum = firstImprovementValue > firstImprovementMaximum
+                            ? firstImprovementValue
+                            : firstImprovementMaximum;
 
-                        accumulated += currentValue;
-                        values.Add(currentValue);
+                        bestImprovementMinimum = bestImprovementValue < bestImprovementMinimum
+                            ? bestImprovementValue
+                            : bestImprovementMinimum;
+                        bestImprovementMaximum = bestImprovementValue > bestImprovementMaximum
+                            ? bestImprovementValue
+                            : bestImprovementMaximum;
                     }
 
-                    var average = accumulated / numberOfExecutions;
+                    var firstImprovementAverage = firstImprovementAccumulated/ numberOfExecutions;
+                    var bestImprovementAverage = bestImprovementAccumulated / numberOfExecutions;
 
-                    Console.WriteLine($"HillClimb {dimensionalFunction} minimum for {dimension} dimensions: {minimum}");
-                    Console.WriteLine($"HillClimb {dimensionalFunction} maximum for {dimension} dimensions: {maximum}");
-                    Console.WriteLine($"HillClimb {dimensionalFunction} average for {dimension} dimensions: {average}");
+                    Console.WriteLine($"HillClimb {dimensionalFunction} First Improvement minimum for {dimension} dimensions: {firstImprovementMinimum}");
+                    Console.WriteLine($"HillClimb {dimensionalFunction} First Improvement maximum for {dimension} dimensions: {firstImprovementMaximum}");
+                    Console.WriteLine($"HillClimb {dimensionalFunction} First Improvement average for {dimension} dimensions: {firstImprovementAverage}");
 
-                    var standardDeviation = Math.Sqrt(values.Sum(x => (x - average) * (x - average)) / (numberOfExecutions - 1));
-                    Console.WriteLine($"HillClimb {dimensionalFunction} standard deviation for {dimension} dimensions: {standardDeviation}");
+                    var firstImprovementDeviation = Math.Sqrt(firstImprovementValues.Sum(x => (x - firstImprovementAverage) * (x - firstImprovementAverage)) / (numberOfExecutions - 1));
+                    Console.WriteLine($"HillClimb {dimensionalFunction} First Improvement standard deviation for {dimension} dimensions: {firstImprovementDeviation}");
+                    Console.WriteLine("---------------------");
+
+                    Console.WriteLine($"HillClimb {dimensionalFunction} Best Improvement minimum for {dimension} dimensions: {bestImprovementMinimum}");
+                    Console.WriteLine($"HillClimb {dimensionalFunction} Best Improvement maximum for {dimension} dimensions: {bestImprovementMaximum}");
+                    Console.WriteLine($"HillClimb {dimensionalFunction} Best Improvement average for {dimension} dimensions: {bestImprovementAverage}");
+
+                    var bestImprovementDeviation = Math.Sqrt(bestImprovementValues.Sum(x => (x - bestImprovementAverage) * (x - bestImprovementAverage)) / (numberOfExecutions - 1));
+                    Console.WriteLine($"HillClimb {dimensionalFunction} Best Improvement standard deviation for {dimension} dimensions: {bestImprovementDeviation}");
                     Console.WriteLine("---------------------");
                 }
             }
         }
 
-        private void DisplayImprovement(HillClimbingBinaryMinimumBuilder builder, DimensionalFunction function)
+        private void DisplayImprovement(HillClimbingMinimumBuilder builder, DimensionalFunction function)
         {
             var firstImprovementValue = builder
                 .WithImprovementStrategy(new FirstImprovementStrategy())

@@ -8,10 +8,12 @@ namespace GeneticAlgorithmsHomeworks.Homework1
 {
     public class SimulatedAnnealingMinimumBuilder
     {
-        private readonly double alpha = 0.09;
+        private readonly double alpha = 0.99;
         private DimensionalFunction function;
-        private readonly double minimumTemperature = 0.001;
-        private double temperature = 1;
+        private readonly double minimumTemperature = 0.00001;
+        private double startingTemperature = 1;
+
+        private int precision = 3;
 
         public SimulatedAnnealingMinimumBuilder WithStartingTemperature(double temperature)
         {
@@ -20,7 +22,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
                 throw new ArgumentException("Temperature should not be negative!");
             }
 
-            this.temperature = temperature;
+            this.startingTemperature = temperature;
             return this;
         }
 
@@ -34,21 +36,24 @@ namespace GeneticAlgorithmsHomeworks.Homework1
 
         public double Build()
         {
+            var temperature = startingTemperature;
+            function.Precision = precision;
+
             var minimum = double.MaxValue;
+            var currentState =
+                DomainHelper.RandomBinaryNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition(), precision);
 
             while (temperature > minimumTemperature)
             {
-                var randomState =
-                    DomainHelper.RandomNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition());
-
-                var neighbour = GetNeighbour(randomState);
+                var neighbour = GetNeighbour(currentState);
                 var neighbourValue = function.GetValue(neighbour);
 
-                var randomNumber = new Random().Next();
+                var randomNumber = new Random().NextDouble();
 
-                if (minimum > neighbourValue || (randomNumber % 1000 / 100) < Math.Exp((neighbourValue - minimum)/temperature))
+                if (minimum > neighbourValue || randomNumber < Math.Exp((neighbourValue - minimum) / temperature))
                 {
                     minimum = neighbourValue;
+                    currentState = neighbour;
                 }
 
                 temperature *= alpha;
@@ -57,48 +62,18 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             return minimum;
         }
 
-        private static DimensionSet<double> GetNeighbour(DimensionSet<double> subject)
+        private DimensionSet<BinaryRepresentation> GetNeighbour(DimensionSet<BinaryRepresentation> subject)
         {
             var randomDimension = new Random().Next(0, subject.Count() - 1);
 
-            var bitRepresentation = BinaryRepresentation.FromDouble(subject.ElementAt(randomDimension));
-
-            var alteredRepresentation = new StringBuilder(bitRepresentation);
+            var alteredRepresentation = new StringBuilder(subject.ElementAt(randomDimension).Value);
             var randomBit = new Random().Next(0, alteredRepresentation.Length);
             alteredRepresentation[randomBit] = alteredRepresentation[randomBit] == '0' ? '1' : '0';
 
-            var alteredDimension =
-                DecodeBinaryRepresentation(BinaryRepresentation.Create(alteredRepresentation.ToString()));
-
             var neighbour = subject.ToList();
-            neighbour[randomDimension] = alteredDimension;
+            neighbour[randomDimension] = BinaryRepresentation.Create(alteredRepresentation.ToString());
 
-            return new DimensionSet<double>(neighbour);
-        }
-
-        private static double DecodeBinaryRepresentation(BinaryRepresentation binaryRepresentation)
-        {
-            long v = 0;
-            for (var i = binaryRepresentation.Value.Length - 1; i >= 0; i--)
-            {
-                v = (v << 1) + (binaryRepresentation.Value[i] - '0');
-            }
-
-            var d = BitConverter.ToDouble(BitConverter.GetBytes(v), 0);
-
-            return d;
-
-            /*var stringRepresentation = binaryRepresentation.Value;
-            var representationLength = stringRepresentation.Length;
-
-            var nBytes = (int)Math.Ceiling(representationLength / 8m);
-            var bytesAsStrings =
-                Enumerable.Range(0, nBytes)
-                    .Select(i => stringRepresentation.Substring(8 * i, Math.Min(8, representationLength- 8 * i)));
-
-            var byteArray = bytesAsStrings.Select(b => Convert.ToSByte(b)).ToArray();
-
-            return Convert.ToDouble(byteArray); */
+            return new DimensionSet<BinaryRepresentation>(neighbour);
         }
     }
 }

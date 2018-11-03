@@ -11,41 +11,44 @@ namespace GeneticAlgorithmsHomeworks.Homework1
     public class HillClimbingMinimumBuilder
     {
         private int iterations = 1;
+        private int precision = 3;
         private DimensionalFunction function;
         private ImprovementStrategy strategy;
 
-        public HillClimbingMinimumBuilder WithIterations(int iterations)
-        {
-            if (iterations <= 0)
-            {
-                throw new ArgumentException("The hill climbing minimum builder should iterate at least once!");
-            }
-
-            this.iterations = iterations;
-            return this;
-        }
-
         public HillClimbingMinimumBuilder WithFunction(DimensionalFunction function)
         {
-            this.function = function ?? throw new ArgumentNullException("The hill climb minimum builder needs a non-null function to work with!");
+            this.function = function ?? throw new ArgumentException("The hill climbing minimum builder needs a non null function to work with!");
+
             return this;
         }
 
         public HillClimbingMinimumBuilder WithImprovementStrategy(ImprovementStrategy strategy)
         {
-            this.strategy = strategy ?? throw new ArgumentNullException("The hill climb minimum builder needs a non-null imporvement strategy to work with!");
+            this.strategy = strategy ?? throw new ArgumentException("The hill climbing minimum builder needs a non null strategy to work with!");
+
+            return this;
+        }
+
+        public HillClimbingMinimumBuilder WithIterations(int iterations)
+        {
+            if (iterations <= 0)
+            {
+                throw new ArgumentException("The hill climbing minimum builder needs at least 1 iteration!");
+            }
+            this.iterations = iterations;
 
             return this;
         }
 
         public double Build()
         {
+            function.Precision = precision;
             var minimum = double.MaxValue;
 
             for (var currentIteration = 1; currentIteration <= iterations; currentIteration++)
             {
                 var randomState =
-                    DomainHelper.RandomNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition());
+                    DomainHelper.RandomBinaryNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition(), precision);
 
                 var neighboursExhausted = false;
 
@@ -68,80 +71,35 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             return minimum;
         }
 
-        private static IEnumerable<DimensionSet<double>> GetNeighbourhood(DimensionSet<double> subject)
+        private static IEnumerable<DimensionSet<BinaryRepresentation>> GetNeighbourhood(DimensionSet<BinaryRepresentation> subject)
         {
-            return subject.SelectMany((vectorValue, index) =>
+            return subject.SelectMany((bitRepresentation, index) =>
             {
-                var bitRepresentation = BinaryRepresentation.FromDouble(vectorValue);
                 var allAlterations = GetAlteredRepresentations(bitRepresentation);
 
-                var neighbourhood = new List<DimensionSet<double>>();
+                var neighbourhood = new List<DimensionSet<BinaryRepresentation>>();
                 foreach (var alteration in allAlterations)
                 {
                     var neighbour = subject.ToList();
+                    neighbour[index] = alteration;
 
-                    var decodedAlteration = DecodeBinaryRepresentation(alteration);
-                    neighbour[index] = decodedAlteration;
-
-                    neighbourhood.Add(new DimensionSet<double>(neighbour));
+                    neighbourhood.Add(new DimensionSet<BinaryRepresentation>(neighbour));
                 }
-
                 return neighbourhood;
+
             }).ToList();
         }
 
         private static IEnumerable<BinaryRepresentation> GetAlteredRepresentations(BinaryRepresentation bitRepresentation)
         {
-            var stringRepresentation = bitRepresentation.Value;
-
-            var byteChunks = stringRepresentation.ChunksOfSize(8);
-
-            return byteChunks.Select((chunk, index) =>
+            return bitRepresentation.Value.Select((bit, index)=>
             {
-                var chunkIndexStart = index * 8;
-
-                var alteredBit = chunk[7] == '0' ? '1' : '0';
-
-                var alteredChunk = new StringBuilder(chunk);
-                alteredChunk[7] = alteredBit;
-                    
+                var alteredBit = bit == '0' ? '1' : '0';
                 var alteredRepresentation = new StringBuilder(bitRepresentation.Value);
-                alteredRepresentation.Remove(chunkIndexStart, 8);
-                alteredRepresentation.Insert(chunkIndexStart, alteredChunk);
+                alteredRepresentation[index] = alteredBit;
 
                 return BinaryRepresentation.Create(alteredRepresentation.ToString());
             });
-
-//            return stringRepresentation.Select((bit, index) =>
-//            {
-//                var alteredBit = bit == '0' ? '1' : '0';
-//
-//                var alteredRepresentation = new StringBuilder(bitRepresentation.Value);
-//                alteredRepresentation[index] = alteredBit;
-//
-//                return BinaryRepresentation.Create(alteredRepresentation.ToString());
-//            });
-        }
-
-        private static double DecodeBinaryRepresentation(BinaryRepresentation binaryRepresentation)
-        {
-            long v = 0;
-            for (int i = binaryRepresentation.Value.Length - 1; i >= 0; i--) v = (v << 1) + (binaryRepresentation.Value[i] - '0');
-            double d = BitConverter.ToDouble(BitConverter.GetBytes(v), 0);
-
-            return d;
-
-            /*var stringRepresentation = binaryRepresentation.Value;
-            var representationLength = stringRepresentation.Length;
-
-            var nBytes = (int)Math.Ceiling(representationLength / 8m);
-            var bytesAsStrings =
-                Enumerable.Range(0, nBytes)
-                    .Select(i => stringRepresentation.Substring(8 * i, Math.Min(8, representationLength- 8 * i)));
-
-            var byteArray = bytesAsStrings.Select(b => Convert.ToSByte(b)).ToArray();
-
-            return Convert.ToDouble(byteArray); */
         }
     }
 }
