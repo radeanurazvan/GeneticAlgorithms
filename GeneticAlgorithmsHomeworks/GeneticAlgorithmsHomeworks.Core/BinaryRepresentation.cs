@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -21,30 +22,31 @@ namespace GeneticAlgorithmsHomeworks.Core
                 throw new InvalidOperationException("Invalid binary representation!");
             }
 
-            Value = representation;
+            Bits = representation.Select(x => CharBit.Create(x));
         }
 
-        public string Value { get; }
+        protected BinaryRepresentation(IEnumerable<CharBit> bits)
+        {
+            Bits = bits ?? throw new InvalidOperationException("Bits cannot be null!");
+        }
+
+        public IEnumerable<CharBit> Bits { get; }
 
         public static BinaryRepresentation Create(string value)
         {
             return new BinaryRepresentation(value);
         }
 
-        public static BinaryRepresentation FromDouble(double value)
+        public string AsString()
         {
-            var representation = new StringBuilder();
-            foreach (var b in BitConverter.GetBytes(value))
+            var builder = new StringBuilder();
+
+            foreach (var bit in Bits)
             {
-                representation.Append(Convert.ToString(b, 2).PadLeft(8, '0'));
+                builder = builder.Append(bit);
             }
 
-            return new BinaryRepresentation(representation.ToString());
-        }
-
-        public static implicit operator string(BinaryRepresentation representation)
-        {
-            return representation.Value;
+            return builder.ToString();
         }
     }
 }

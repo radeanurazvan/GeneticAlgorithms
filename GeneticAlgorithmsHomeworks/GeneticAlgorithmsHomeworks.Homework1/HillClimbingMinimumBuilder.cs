@@ -95,10 +95,10 @@ namespace GeneticAlgorithmsHomeworks.Homework1
 
         private static IEnumerable<BinaryRepresentation> GetAlteredRepresentations(BinaryRepresentation bitRepresentation)
         {
-            return bitRepresentation.Value.Select((bit, index)=>
+            return bitRepresentation.Bits.Select((bit, index)=>
             {
                 var alteredBit = bit == '0' ? '1' : '0';
-                var alteredRepresentation = new StringBuilder(bitRepresentation.Value);
+                var alteredRepresentation = new StringBuilder(bitRepresentation.AsString());
                 alteredRepresentation[index] = alteredBit;
 
                 return BinaryRepresentation.Create(alteredRepresentation.ToString());

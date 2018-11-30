@@ -66,7 +66,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
         {
             var randomDimension = new Random().Next(0, subject.Count() - 1);
 
-            var alteredRepresentation = new StringBuilder(subject.ElementAt(randomDimension).Value);
+            var alteredRepresentation = new StringBuilder(subject.ElementAt(randomDimension).AsString());
             var randomBit = new Random().Next(0, alteredRepresentation.Length);
             alteredRepresentation[randomBit] = alteredRepresentation[randomBit] == '0' ? '1' : '0';
 

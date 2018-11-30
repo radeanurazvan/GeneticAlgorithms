@@ -7,7 +7,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
 {
     public static class GeneticHelper
     {
-        public static IEnumerable<DimensionSet<Chromosome>> GeneratePopulation(
+        public static Population GeneratePopulation(
             int populationSize,
             Domain domain, 
             DimensionDefinition dimensionDefinition, 
@@ -30,7 +30,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 population.Add(chromosomeSet);
             }
 
-            return population;
+            return Population.Create(population);
         }
     }
 }

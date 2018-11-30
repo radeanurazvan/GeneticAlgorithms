@@ -1,4 +1,5 @@
 ﻿using System;
+using GeneticAlgorithmsHomeworks.Core;
 using GeneticAlgorithmsHomeworks.Function;
 
 namespace GeneticAlgorithmsHomeworks.Homework2
@@ -7,8 +8,8 @@ namespace GeneticAlgorithmsHomeworks.Homework2
     {
         private int generations;
         private int populationSize;
-        private double crossoverRate;
-        private double mutationRate;
+        private Rate crossoverRate;
+        private Rate mutationRate;
         private DimensionalFunction optimizingFunction;
         private int precision;
 
@@ -41,7 +42,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 throw new InvalidOperationException("Crossover rate should be higher than 0!");
             } 
 
-            this.crossoverRate = rate;
+            this.crossoverRate = Rate.Create(rate);
             return this;
         }
 
@@ -52,7 +53,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 throw new InvalidOperationException("Mutation rate should be higher than 0!");
             }
 
-            this.mutationRate = rate;
+            this.mutationRate = Rate.Create(rate);
             return this;
         }
 
@@ -85,6 +86,12 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 optimizingFunction.GetDimensionDefinition(), 
                 this.precision);
 
+            for (var generation = 1; generation <= this.generations; generation++)
+            {
+                population = population.Mutate(mutationRate);
+                population = population.CrossOver(crossoverRate);
+                population = population.Select();
+            }
 
 
             return minimum;
