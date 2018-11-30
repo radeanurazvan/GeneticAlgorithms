@@ -39,10 +39,13 @@ namespace GeneticAlgorithmsHomeworks.Function
             return Math.Round(GetValueCore(tuple), Precision);
         }
 
-        public double GetValue(DimensionSet<BinaryRepresentation> tuple)
+        public double GetValue<TSetType, TToDoubleSetConverter>(
+            DimensionSet<TSetType> tuple,
+            TToDoubleSetConverter converter)
+
+            where TToDoubleSetConverter : FunctionSetToDoubleSetConverter<TSetType>
         {
-            var doubleSet = tuple.Select((x, dimension) =>
-                BinaryHelper.DecodeBinary(x, GetDomain().GetDefinitionForDimension(dimension + 1), Precision));
+            var doubleSet = converter.Convert(tuple, this);
 
             return GetValue(new DimensionSet<double>(doubleSet));
         }

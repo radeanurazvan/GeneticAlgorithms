@@ -12,7 +12,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1.Improvement
             DimensionalFunction function, 
             double currentMinimum)
         {
-            return neighbourhood.FirstOrDefault(n => function.GetValue(n) < currentMinimum);
+            return neighbourhood.FirstOrDefault(n => function.GetValue(n, new BinarySetToDoubleSetConverter()) < currentMinimum);
         }
         public override DimensionSet<double> PickImprovement(
             IEnumerable<DimensionSet<double>> neighbourhood,

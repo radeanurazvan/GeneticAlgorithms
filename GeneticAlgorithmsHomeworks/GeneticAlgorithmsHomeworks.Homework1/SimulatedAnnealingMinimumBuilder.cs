@@ -41,12 +41,12 @@ namespace GeneticAlgorithmsHomeworks.Homework1
 
             var minimum = double.MaxValue;
             var currentState =
-                DomainHelper.RandomBinaryNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition(), precision);
+                DomainHelper.RandomDimensionalBinaryValueInDomainRange(function.GetDomain(), function.GetDimensionDefinition(), precision);
 
             while (temperature > minimumTemperature)
             {
                 var neighbour = GetNeighbour(currentState);
-                var neighbourValue = function.GetValue(neighbour);
+                var neighbourValue = function.GetValue(neighbour, new BinarySetToDoubleSetConverter());
 
                 var randomNumber = new Random().NextDouble();
 

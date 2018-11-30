@@ -48,7 +48,10 @@ namespace GeneticAlgorithmsHomeworks.Homework1
             for (var currentIteration = 1; currentIteration <= iterations; currentIteration++)
             {
                 var randomState =
-                    DomainHelper.RandomBinaryNumbersInDomainRange(function.GetDomain(), function.GetDimensionDefinition(), precision);
+                    DomainHelper.RandomDimensionalBinaryValueInDomainRange(
+                        function.GetDomain(), 
+                        function.GetDimensionDefinition(), 
+                        precision);
 
                 var neighboursExhausted = false;
 
@@ -63,7 +66,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1
                     }
                     else
                     {
-                        minimum = function.GetValue(improvement);
+                        minimum = function.GetValue(improvement, new BinarySetToDoubleSetConverter());
                     }
                 }
             }

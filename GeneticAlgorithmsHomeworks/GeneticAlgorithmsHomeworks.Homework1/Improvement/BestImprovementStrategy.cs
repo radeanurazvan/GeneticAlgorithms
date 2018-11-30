@@ -16,7 +16,7 @@ namespace GeneticAlgorithmsHomeworks.Homework1.Improvement
 
             foreach (var neighbour in neighbourhood)
             {
-                var value = function.GetValue(neighbour);
+                var value = function.GetValue(neighbour, new BinarySetToDoubleSetConverter());
                 if (currentMinimum <= value)
                 {
                     continue;

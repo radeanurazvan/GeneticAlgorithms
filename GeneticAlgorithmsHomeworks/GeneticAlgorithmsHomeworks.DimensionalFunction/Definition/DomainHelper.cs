@@ -9,7 +9,7 @@ namespace GeneticAlgorithmsHomeworks.Function
 {
     public class DomainHelper
     {
-        public static DimensionSet<double> RandomNumbersInDomainRange(Domain domain, DimensionDefinition dimensionDefinition)
+        public static DimensionSet<double> RandomDimensionalValueInDomainRange(Domain domain, DimensionDefinition dimensionDefinition)
         {
             var numbers = new List<double>();
             for (var dimension = 1; dimension <= dimensionDefinition; dimension++)
@@ -27,7 +27,7 @@ namespace GeneticAlgorithmsHomeworks.Function
             return new DimensionSet<double>(numbers);
         }
 
-        public static DimensionSet<BinaryRepresentation> RandomBinaryNumbersInDomainRange(
+        public static DimensionSet<BinaryRepresentation> RandomDimensionalBinaryValueInDomainRange(
             Domain domain, 
             DimensionDefinition dimensionDefinition, 
             int precision)

@@ -47,7 +47,7 @@ end
 
 Detalii de implementare Hill climb:
 	Numerele sunt reprezentate ca siruri de biti, encapsulate in clasa BinaryRepresentation. Numarul de biti este calculat dupa formula 
-	bitsNumber = log2(domainEnd-domainStart)*10^precision, unde domainEnd este capatul din dreapta al domeniului functiei, iar domainStart 
+	bitsNumber = log2((domainEnd-domainStart)*10^precision), unde domainEnd este capatul din dreapta al domeniului functiei, iar domainStart 
 	este capatul din stanga al domeniului. Precizia reprezinta numarul de zecimale cu care dorim sa lucram.
 	Pentru o functie de dimensiune n, o solutie va fi reprezentata de un sir de n* bitsNumber biti.
 

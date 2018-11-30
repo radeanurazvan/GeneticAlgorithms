@@ -6,7 +6,7 @@ namespace GeneticAlgorithmsHomeworks.Core
 {
     public class BinaryRepresentation
     {
-        private BinaryRepresentation(string representation)
+        protected BinaryRepresentation(string representation)
         {
             if (string.IsNullOrWhiteSpace(representation))
             {

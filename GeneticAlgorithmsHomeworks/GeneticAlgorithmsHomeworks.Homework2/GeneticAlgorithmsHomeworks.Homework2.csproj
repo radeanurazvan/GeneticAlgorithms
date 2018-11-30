@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeneticAlgorithmsHomeworks.Core\GeneticAlgorithmsHomeworks.Core.csproj" />
+    <ProjectReference Include="..\GeneticAlgorithmsHomeworks.DimensionalFunction\GeneticAlgorithmsHomeworks.Function.csproj" />
+  </ItemGroup>
+
+</Project>
