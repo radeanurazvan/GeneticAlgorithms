@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GeneticAlgorithmsHomeworks.Core;
 using GeneticAlgorithmsHomeworks.Function;
 
@@ -78,8 +79,6 @@ namespace GeneticAlgorithmsHomeworks.Homework2
         public double Build()
         {
             optimizingFunction.Precision = precision;
-            var minimum = double.MaxValue;
-
             var population = GeneticHelper.GeneratePopulation(
                 this.populationSize, 
                 optimizingFunction.GetDomain(),
@@ -90,16 +89,17 @@ namespace GeneticAlgorithmsHomeworks.Homework2
             {
                 population = population.Mutate(mutationRate);
                 population = population.CrossOver(crossoverRate);
-                population = population.Select();
+                population = population.Select(
+                    new RouletteWheelSelectionStrategy(), 
+                    FitnessFunction.FromFunctionToMinimize(optimizingFunction));
             }
 
+            var minimum = population.Chromosomes.Min(c =>
+                optimizingFunction.GetValue(c, new ChromosomeSetToDoubleSetConverter()));
+            var values = population.Chromosomes.Select(c =>
+                optimizingFunction.GetValue(c, new ChromosomeSetToDoubleSetConverter()));
 
             return minimum;
-        }
-
-        private double EvaluateChromosomes(DimensionSet<Chromosome> chromosomeSet)
-        {
-            return this.optimizingFunction.GetValue(chromosomeSet, new ChromosomeSetToDoubleSetConverter());
         }
     }
 }

@@ -8,11 +8,13 @@ namespace GeneticAlgorithmsHomeworks.Homework2
 {
     public sealed class Population
     {
-        private IEnumerable<DimensionSet<Chromosome>> chromosomes = new List<DimensionSet<Chromosome>>();
+        public IEnumerable<DimensionSet<Chromosome>> Chromosomes { get; } = new List<DimensionSet<Chromosome>>();
+
+        public int Size => Chromosomes.Count();
 
         private Population(IEnumerable<DimensionSet<Chromosome>> chromosomes)
         {
-            this.chromosomes = chromosomes ?? throw new InvalidOperationException();
+            this.Chromosomes = chromosomes ?? throw new InvalidOperationException();
         }
 
         public static Population Create(IEnumerable<DimensionSet<Chromosome>> chromosomes)
@@ -22,7 +24,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
 
         public Population Mutate(Rate mutationRate)
         {
-            var mutatedChromosomes = chromosomes.Select(set =>
+            var mutatedChromosomes = Chromosomes.Select(set =>
             {
                 return new DimensionSet<Chromosome>(set.Select(c => c.Mutate(mutationRate)));
             });
@@ -31,10 +33,10 @@ namespace GeneticAlgorithmsHomeworks.Homework2
 
         public Population CrossOver(Rate crossoverRate)
         {
-            var crossedSets = chromosomes.Select(set =>
+            var crossedSets = Chromosomes.Select(set =>
             {
                 var chromosomesToCross = set.Where(c => crossoverRate.DoRandomPass()).ToList();
-                if (chromosomesToCross.Count() % 2 == 0)
+                if (chromosomesToCross.Any() && chromosomesToCross.Count() % 2 == 0)
                 {
                     chromosomesToCross.Remove(chromosomesToCross.Last());
                 }
@@ -56,9 +58,9 @@ namespace GeneticAlgorithmsHomeworks.Homework2
             return new Population(crossedSets);
         }
 
-        public Population Select()
+        public Population Select(PopulationSelectionStrategy selectionStrategy, FitnessFunction fitness)
         {
-            return this;
+            return selectionStrategy.Select(this, fitness);
         }
     }
 }

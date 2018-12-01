@@ -6,8 +6,6 @@ namespace GeneticAlgorithmsHomeworks.Core
     {
         private double value;
 
-        private double MinifiedRate => value / 100;
-
         private Rate(double rate)
         {
             this.value = rate;
@@ -15,9 +13,9 @@ namespace GeneticAlgorithmsHomeworks.Core
 
         public static Rate Create(double rate)
         {
-            if (rate <= 0 || rate >= 100)
+            if (rate < 0 || rate > 1)
             {
-                throw new InvalidOperationException("Rate should be greater than 0 and lower than 100!");
+                throw new InvalidOperationException("Rate should be between 0 and 1!");
             }
 
             return new Rate(rate);
@@ -32,7 +30,7 @@ namespace GeneticAlgorithmsHomeworks.Core
         {
             var rand = new Random().NextDouble();
 
-            if (rand >= 0 && rand <= MinifiedRate)
+            if (rand >= 0 && rand <= value)
             {
                 return true;
             }

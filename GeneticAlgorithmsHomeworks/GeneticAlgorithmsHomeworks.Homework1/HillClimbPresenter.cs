@@ -94,29 +94,5 @@ namespace GeneticAlgorithmsHomeworks.Homework1
                 }
             }
         }
-
-        private void DisplayImprovement(HillClimbingMinimumBuilder builder, DimensionalFunction function)
-        {
-            var firstImprovementValue = builder
-                .WithImprovementStrategy(new FirstImprovementStrategy())
-                .Build();
-            Console.WriteLine($"{function} first improvement: {firstImprovementValue}");
-
-            using (var file = new StreamWriter(@"History.txt", true))
-            {
-                file.WriteLine($"{function} first improvement: {firstImprovementValue}");
-            }
-
-            var bestImprovementValue = builder
-                .WithImprovementStrategy(new BestImprovementStrategy())
-                .Build();
-            Console.WriteLine($"{function} best improvement: {bestImprovementValue}");
-
-
-            using (var file = new StreamWriter(@"History.txt", true))
-            {
-                file.WriteLine($"{function} best improvement: {bestImprovementValue}");
-            }
-        }
     }
 }

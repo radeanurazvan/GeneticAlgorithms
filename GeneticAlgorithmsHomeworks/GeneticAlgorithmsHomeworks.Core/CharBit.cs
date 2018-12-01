@@ -8,7 +8,7 @@ namespace GeneticAlgorithmsHomeworks.Core
 
         private CharBit(char bit)
         {
-            if (bit != '0' || bit != '1')
+            if (bit != '0' && bit != '1')
             {
                 throw new InvalidOperationException("Bit values should be only 0 or 1!");
             }
