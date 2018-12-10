@@ -36,7 +36,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
             var crossedSets = Chromosomes.Select(set =>
             {
                 var chromosomesToCross = set.Where(c => crossoverRate.DoRandomPass()).ToList();
-                if (chromosomesToCross.Any() && chromosomesToCross.Count() % 2 == 0)
+                if (chromosomesToCross.Any() && chromosomesToCross.Count() % 2 != 0)
                 {
                     chromosomesToCross.Remove(chromosomesToCross.Last());
                 }

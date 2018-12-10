@@ -71,5 +71,21 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 }
             }
         }
+
+        public void Present1()
+        {
+            var function = new SixHump();
+            function.TrySetDimension(5);
+
+            var builder = new GeneticMinimumBuilder()
+                .WithGenerations(50)
+                .WithPopulationSize(50)
+                .WithCrossoverRate(0.3)
+                .WithMutationRate(0.01)
+                .WithPrecision(3)
+                .WithOptimizingFunction(function);
+
+            Console.WriteLine(builder.Build());
+        }
     }
 }

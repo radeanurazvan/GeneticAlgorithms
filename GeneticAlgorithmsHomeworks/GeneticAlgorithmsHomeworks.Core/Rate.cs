@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GeneticAlgorithmsHomeworks.Core
 {
-    public sealed class Rate
+    public sealed class Rate : ValueObject
     {
         private double value;
 
@@ -44,6 +45,11 @@ namespace GeneticAlgorithmsHomeworks.Core
             {
                 act();
             }
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return value;
         }
     }
 }

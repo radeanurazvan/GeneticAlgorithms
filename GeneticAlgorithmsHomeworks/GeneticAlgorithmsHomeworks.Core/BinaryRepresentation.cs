@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GeneticAlgorithmsHomeworks.Core
 {
-    public class BinaryRepresentation
+    public class BinaryRepresentation : ValueObject
     {
         protected BinaryRepresentation(string representation)
         {
@@ -22,7 +22,7 @@ namespace GeneticAlgorithmsHomeworks.Core
                 throw new InvalidOperationException("Invalid binary representation!");
             }
 
-            Bits = representation.Select(x => CharBit.Create(x));
+            Bits = representation.Select(CharBit.Create);
         }
 
         protected BinaryRepresentation(IEnumerable<CharBit> bits)
@@ -47,6 +47,11 @@ namespace GeneticAlgorithmsHomeworks.Core
             }
 
             return builder.ToString();
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Bits;
         }
     }
 }

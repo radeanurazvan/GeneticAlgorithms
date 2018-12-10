@@ -78,12 +78,14 @@ namespace GeneticAlgorithmsHomeworks.Homework2
 
         public double Build()
         {
+            var minimum = double.MaxValue;
             optimizingFunction.Precision = precision;
+
             var population = GeneticHelper.GeneratePopulation(
-                this.populationSize, 
+                populationSize, 
                 optimizingFunction.GetDomain(),
                 optimizingFunction.GetDimensionDefinition(), 
-                this.precision);
+                precision);
 
             for (var generation = 1; generation <= this.generations; generation++)
             {
@@ -92,12 +94,14 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 population = population.Select(
                     new RouletteWheelSelectionStrategy(), 
                     FitnessFunction.FromFunctionToMinimize(optimizingFunction));
-            }
 
-            var minimum = population.Chromosomes.Min(c =>
-                optimizingFunction.GetValue(c, new ChromosomeSetToDoubleSetConverter()));
-            var values = population.Chromosomes.Select(c =>
-                optimizingFunction.GetValue(c, new ChromosomeSetToDoubleSetConverter()));
+                var generationMinimum = population.Chromosomes.Min(c =>
+                    optimizingFunction.GetValue(c, new ChromosomeSetToDoubleSetConverter()));
+                if (generationMinimum < minimum)
+                {
+                    minimum = generationMinimum;
+                }
+            }
 
             return minimum;
         }

@@ -24,7 +24,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
             {
                 var chromosomes = 
                     DomainHelper.RandomDimensionalBinaryValueInDomainRange(domain, dimensionDefinition, precision)
-                    .Select(b => Chromosome.Create(b));
+                    .Select(Chromosome.Create);
                 var chromosomeSet = new DimensionSet<Chromosome>(chromosomes);
 
                 population.Add(chromosomeSet);
