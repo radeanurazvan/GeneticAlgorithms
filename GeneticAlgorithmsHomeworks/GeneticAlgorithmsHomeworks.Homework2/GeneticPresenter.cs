@@ -27,7 +27,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 .WithMutationRate(0.01)
                 .WithPrecision(3);
 
-            var numberOfExecutions = 30;
+            var numberOfExecutions = 15;
 
             foreach (var dimension in dimensions)
             {

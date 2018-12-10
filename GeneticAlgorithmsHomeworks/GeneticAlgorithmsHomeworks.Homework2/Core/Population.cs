@@ -32,25 +32,28 @@ namespace GeneticAlgorithmsHomeworks.Homework2
 
         public Population CrossOver(Rate crossoverRate)
         {
-            var chromosomesToCross = this.Chromosomes.Where(c => crossoverRate.DoRandomPass()).ToList();
-            if (chromosomesToCross.Any() && chromosomesToCross.Count() % 2 != 0)
+            var chromosomesIndexToCross = this.Chromosomes
+                .Select((chromosome, index) => (chromosome, index))
+                .Where(c => crossoverRate.DoRandomPass())
+                .Select((c, i) => i)
+                .ToList();
+            if (chromosomesIndexToCross.Any() && chromosomesIndexToCross.Count() % 2 != 0)
             {
-                chromosomesToCross.Remove(chromosomesToCross.Last());
+                chromosomesIndexToCross.Remove(chromosomesIndexToCross.Last());
             }
 
             var crossedChromosomes = new List<Chromosome>();
-            for (var i = 0; i < chromosomesToCross.Count - 1; i += 2)
+            for (var i = 0; i < chromosomesIndexToCross.Count - 1; i += 2)
             {
-                var firstChromosome = chromosomesToCross.ElementAt(i);
-                var secondChromosome = chromosomesToCross.ElementAt(i + 1);
+                var firstChromosome = Chromosomes.ElementAt(i);
+                var secondChromosome = Chromosomes.ElementAt(i + 1);
 
                 var crossover = Crossover.Create(firstChromosome, secondChromosome);
                 crossedChromosomes.Add(crossover.FirstResult);
                 crossedChromosomes.Add(crossover.SecondResult);
             }
 
-            var lefoutChromosomes = Chromosomes.Except(chromosomesToCross);
-
+            var lefoutChromosomes = Chromosomes.Where((c, i) => !chromosomesIndexToCross.Contains(i));
             return new Population(lefoutChromosomes.Concat(crossedChromosomes));
         }
 
