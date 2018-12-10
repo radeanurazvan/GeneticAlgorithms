@@ -1,1 +1,74 @@
-﻿
+﻿1.Problema
+
+Cerinta problemei este aflarea minimului unor functii, implementand un algoritm genetic.
+
+2.Algoritmul utilizat
+
+Algoritmii utilizat este unul de tip geneti
+
+Pseudocod:
+
+INITIALIZARE	begin 
+		t := 0
+  		genereaza P(t)
+		evalueaza P(t)
+ITERARE		while (not CONDITIE_OPRIRE)  do begin 
+			t := t + 1
+			selecteaza P(t) din P(t-1)
+			recombina P(t)
+			evalueaza P(t)
+		end
+  
+Strategia de selectie roata norocului:
+EVALUEAZA P		for i:=0 to POP_SIZE
+				eval[i]=f(P(i))
+FITNESSUL TOTAL		for i:=0 to POP_SIZE
+				T+=eval[i]
+PROB.SEL.INDIVIDUALE	for i:=0 to POP_SIZE
+				p[i]=eval[i]/T
+PROB.SEL.CUMULATE	q[0] = 0
+			for i:=0 to POP_SIZE
+				q[i+1]=q[i]+p[i]
+SELECTIA		for i:=0 to POP_SIZE
+				genereaza uniform r in (0,1]
+				selecteza pentru supravieture individul j
+				   pentru care q[j]<r<=q[j+1]
+
+
+Detalii de implementare Hill climb:
+	Numerele sunt reprezentate ca siruri de biti, encapsulate in clasa BinaryRepresentation. Numarul de biti este calculat dupa formula 
+	bitsNumber = log2((domainEnd-domainStart)*10^precision), unde domainEnd este capatul din dreapta al domeniului functiei, iar domainStart 
+	este capatul din stanga al domeniului. Precizia reprezinta numarul de zecimale cu care dorim sa lucram.
+	Pentru o functie de dimensiune n, o solutie va fi reprezentata de un sir de n* bitsNumber biti.
+
+	Deocodarea unei reprezentari binare este responsabilitatea metodei DecodeBinary din clasa BinaryHelper, care primeste drept input o 
+	reprezentare binara, o definitie de domeniu si o precizie. Metoda precizata transforma reprezentarea binara intr-un numar real, apoi
+	o transpune in domeniul dat ca parametru, prin formula :
+	x = (domainEnd - domainStart) * (realNumber / (2^bitsNumber - 1)) + domainStart
+
+    Pe parcursul implementarii au fost abordate 2 strategii:
+    
+    Strategia 1 : Chromosome strategy
+    In aceasta strategie am considerat o solutie candidat ca fiind un cromozom. Un cromozom continea la randul lui N componente, N fiind dimensiunea functiei de optimizat.
+    Ca structuri de date, am ales sa reprezint un cromozom ca fiind o colectie de reprezentari binare. 
+    La mutatie se itera peste fiecare bit al fiecarei componente si dupa evaluarea ratei, se decidea mutarea ce avea sa aiba loc sau nu.
+    La crossover se alege random un punct de taiere intre componente, apoi se face crossover intre componente.
+
+    Strategia 2: DimensionSet strategy
+    In aceasta strategie am considerat o solutie candidat ca fiind un set de N reprezentari binare, N fiind dimensiunea functiei de optimizat. 
+    La mutatie se itera peste fiecare bit al fiecarei reprezentari si dupa evaluarea ratei, se decidea mutarea ce avea sa aiba loc sau nu.
+    La crossover se itereaza peste toate seturile de reprezentari. In fiecare iteratie avem un set curent de reprezentari. Se va itera peste setul curent
+    si se vor alege random perechi de reprezentari binare ce vor suferi crossover. La pasul efectiv de crossover, se face crossover intre perechile din setul curent,
+    deci e ca si cum am simula o taiere in mai multe puncte de la strategia 1.
+
+    Pasul de selectie se face folosind strategie rotii norocului.
+
+
+3.Rezultate:
+Rezultatele in urma a 30 rulari cu 50 generatii de strategia 1 pot fi vazute in imaginile din folderul "Strategia1".
+Inca nu am reusit sa culeg rezultate pentru 15 rulari cu 50 generatii pentru strategia 2.
+
+4. Algoritmul genetic obtine rezultate mai aproape de adevar fata de cele obtinute prin implementarile mele ale algoritmilor Hill Climbing si Simulated Annealing, dar 
+are un cost imens in ceea ce priveste performanta. Un algoritm genetic necesita un timp de rulare cu mult mai mare decat ceilalti 2 algoritmi. 
+
+	
