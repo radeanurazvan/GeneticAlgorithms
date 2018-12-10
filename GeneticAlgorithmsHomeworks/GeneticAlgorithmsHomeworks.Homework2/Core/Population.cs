@@ -6,56 +6,52 @@ using GeneticAlgorithmsHomeworks.Function;
 
 namespace GeneticAlgorithmsHomeworks.Homework2
 {
+    using System.Collections;
+
     public sealed class Population
     {
-        public IEnumerable<DimensionSet<Chromosome>> Chromosomes { get; } = new List<DimensionSet<Chromosome>>();
+        public IEnumerable<Chromosome> Chromosomes { get; } = new List<Chromosome>();
 
         public int Size => Chromosomes.Count();
 
-        private Population(IEnumerable<DimensionSet<Chromosome>> chromosomes)
+        private Population(IEnumerable<Chromosome> chromosomes)
         {
             this.Chromosomes = chromosomes ?? throw new InvalidOperationException();
         }
 
-        public static Population Create(IEnumerable<DimensionSet<Chromosome>> chromosomes)
+        public static Population Create(IEnumerable<Chromosome> chromosomes)
         {
             return new Population(chromosomes);
         }
 
         public Population Mutate(Rate mutationRate)
         {
-            var mutatedChromosomes = Chromosomes.Select(set =>
-            {
-                return new DimensionSet<Chromosome>(set.Select(c => c.Mutate(mutationRate)));
-            });
+            var mutatedChromosomes = Chromosomes.Select(c => c.Mutate(mutationRate));
             return new Population(mutatedChromosomes);
         }
 
         public Population CrossOver(Rate crossoverRate)
         {
-            var crossedSets = Chromosomes.Select(set =>
+            var chromosomesToCross = this.Chromosomes.Where(c => crossoverRate.DoRandomPass()).ToList();
+            if (chromosomesToCross.Any() && chromosomesToCross.Count() % 2 != 0)
             {
-                var chromosomesToCross = set.Where(c => crossoverRate.DoRandomPass()).ToList();
-                if (chromosomesToCross.Any() && chromosomesToCross.Count() % 2 != 0)
-                {
-                    chromosomesToCross.Remove(chromosomesToCross.Last());
-                }
+                chromosomesToCross.Remove(chromosomesToCross.Last());
+            }
 
-                var crossedChromosomes = new List<Chromosome>();
-                for (var i = 0; i < chromosomesToCross.Count - 1; i += 2)
-                {
-                    var firstChromosome = chromosomesToCross.ElementAt(i);
-                    var secondChromosome = chromosomesToCross.ElementAt(i + 1);
+            var crossedChromosomes = new List<Chromosome>();
+            for (var i = 0; i < chromosomesToCross.Count - 1; i += 2)
+            {
+                var firstChromosome = chromosomesToCross.ElementAt(i);
+                var secondChromosome = chromosomesToCross.ElementAt(i + 1);
 
-                    var crossover = Crossover.Create(firstChromosome, secondChromosome);
-                    crossedChromosomes.Add(crossover.FirstResult);
-                    crossedChromosomes.Add(crossover.SecondResult);
-                }
+                var crossover = Crossover.Create(firstChromosome, secondChromosome);
+                crossedChromosomes.Add(crossover.FirstResult);
+                crossedChromosomes.Add(crossover.SecondResult);
+            }
 
-                var lefoutChromosomes = set.Except(chromosomesToCross);
-                return new DimensionSet<Chromosome>(lefoutChromosomes.Concat(crossedChromosomes));
-            });
-            return new Population(crossedSets);
+            var lefoutChromosomes = Chromosomes.Except(chromosomesToCross);
+
+            return new Population(lefoutChromosomes.Concat(crossedChromosomes));
         }
 
         public Population Select(PopulationSelectionStrategy selectionStrategy, FitnessFunction fitness)

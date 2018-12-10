@@ -37,6 +37,11 @@ namespace GeneticAlgorithmsHomeworks.Core
             return new BinaryRepresentation(value);
         }
 
+        public static BinaryRepresentation Create(IEnumerable<CharBit> bits)
+        {
+            return new BinaryRepresentation(bits);
+        }
+
         public string AsString()
         {
             var builder = new StringBuilder();

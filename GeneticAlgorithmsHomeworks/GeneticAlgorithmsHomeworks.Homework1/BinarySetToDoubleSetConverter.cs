@@ -4,7 +4,7 @@ using GeneticAlgorithmsHomeworks.Function;
 
 namespace GeneticAlgorithmsHomeworks.Homework1
 {
-    public sealed class BinarySetToDoubleSetConverter : FunctionSetToDoubleSetConverter<BinaryRepresentation>
+    public sealed class BinarySetToDoubleSetConverter : FunctionSetToDoubleSetConverter<DimensionSet<BinaryRepresentation>>
     {
         public override DimensionSet<double> Convert(
             DimensionSet<BinaryRepresentation> source,

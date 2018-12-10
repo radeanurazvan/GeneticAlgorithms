@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using GeneticAlgorithmsHomeworks.Function;
 
 namespace GeneticAlgorithmsHomeworks.Homework2
@@ -18,16 +17,15 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 throw new InvalidOperationException("Population size should be greater than 0!");
             }
 
-            var population = new List<DimensionSet<Chromosome>>();
+            var population = new List<Chromosome>();
 
             for (var size = 1; size <= populationSize; size++)
             {
-                var chromosomes = 
-                    DomainHelper.RandomDimensionalBinaryValueInDomainRange(domain, dimensionDefinition, precision)
-                    .Select(Chromosome.Create);
-                var chromosomeSet = new DimensionSet<Chromosome>(chromosomes);
+                var chromosomeComponents =
+                    DomainHelper.RandomDimensionalBinaryValueInDomainRange(domain, dimensionDefinition, precision);
+                var chromosome = Chromosome.Create(chromosomeComponents);
 
-                population.Add(chromosomeSet);
+                population.Add(chromosome);
             }
 
             return Population.Create(population);

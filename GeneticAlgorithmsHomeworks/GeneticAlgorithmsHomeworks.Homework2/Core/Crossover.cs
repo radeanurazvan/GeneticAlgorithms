@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Linq;
 
 namespace GeneticAlgorithmsHomeworks.Homework2
 {
+    using System.Linq;
+
     public class Crossover
     {
         public Chromosome FirstResult { get; private set; }
@@ -26,13 +27,13 @@ namespace GeneticAlgorithmsHomeworks.Homework2
 
         private void DoCrossover(Chromosome first, Chromosome second)
         {
-            var cut = new Random().Next(first.Bits.Count() - 2);
+            var cut = new Random().Next(first.Count() - 2);
 
-            var firstLeftCut = first.Bits.TakeWhile((bit, index) => index != cut);
-            var firstRightCut = first.Bits.Except(firstLeftCut);
+            var firstLeftCut = first.Representations.TakeWhile((bit, index) => index != cut);
+            var firstRightCut = first.Representations.Except(firstLeftCut);
 
-            var secondLeftCut = second.Bits.TakeWhile((bit, index) => index != cut);
-            var secondRightCut = second.Bits.Except(secondLeftCut);
+            var secondLeftCut = second.Representations.TakeWhile((bit, index) => index != cut);
+            var secondRightCut = second.Representations.Except(secondLeftCut);
 
 
             FirstResult = Chromosome.Create(firstLeftCut.Concat(secondRightCut));

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeneticAlgorithmsHomeworks.Function;
 
 namespace GeneticAlgorithmsHomeworks.Homework2
 {
@@ -9,7 +8,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
     {
         public override Population Select(Population population, FitnessFunction fitness)
         {
-            var selectedPopulation = new List<DimensionSet<Chromosome>>();
+            var selectedPopulation = new List<Chromosome>();
 
             var setValues = ComputeSetValues(population.Chromosomes, fitness);
             var wheelValues = ComputeWheelValues(setValues).ToList();
@@ -43,7 +42,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
             return wheelValues;
         }
 
-        private static IEnumerable<double> ComputeSetValues(IEnumerable<DimensionSet<Chromosome>> chromosomes, FitnessFunction fitness)
+        private static IEnumerable<double> ComputeSetValues(IEnumerable<Chromosome> chromosomes, FitnessFunction fitness)
         {
             var setValues = chromosomes.Select(fitness.ValueFor);
             if (setValues.Any(v => v <= 0))

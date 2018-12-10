@@ -96,7 +96,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                     FitnessFunction.FromFunctionToMinimize(optimizingFunction));
 
                 var generationMinimum = population.Chromosomes.Min(c =>
-                    optimizingFunction.GetValue(c, new ChromosomeSetToDoubleSetConverter()));
+                    optimizingFunction.GetValue(c, new ChromosomeToDoubleSetConverter()));
                 if (generationMinimum < minimum)
                 {
                     minimum = generationMinimum;

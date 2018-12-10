@@ -1,53 +1,48 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using GeneticAlgorithmsHomeworks.Core;
 
 namespace GeneticAlgorithmsHomeworks.Homework2
 {
-    public class Chromosome : BinaryRepresentation
+    using System;
+    using System.Linq;
+
+    using GeneticAlgorithmsHomeworks.Function;
+
+    public class Chromosome : DimensionSet<BinaryRepresentation>
     {
-        protected Chromosome(BinaryRepresentation representation) : base(representation.AsString())
+        private Chromosome(IEnumerable<BinaryRepresentation> representations)
+        : base(representations)
         {
+            this.Representations = representations ?? throw new InvalidOperationException("Chromosome representations cannot be null!");
         }
+    
+        public IEnumerable<BinaryRepresentation> Representations { get; }
 
-        protected Chromosome(string representation) : base(representation)
+        public static Chromosome Create(IEnumerable<BinaryRepresentation> representations)
         {
-        }
-
-        protected Chromosome(IEnumerable<CharBit> bits) : base(bits)
-        {
-        }
-
-        public new static Chromosome Create(BinaryRepresentation representation)
-        {
-            return new Chromosome(representation);
-        }
-
-        public new static Chromosome Create(string representation)
-        {
-            return new Chromosome(representation);
-        }
-
-        public new static Chromosome Create(IEnumerable<CharBit> bits)
-        {
-            return new Chromosome(bits);
+            return new Chromosome(representations);
         }
 
         public Chromosome Mutate(Rate mutationRate)
         {
-            var representation = new StringBuilder();
-            foreach (var bit in Bits)
+            var mutatedRepresentations = this.Representations.Select(r => 
             {
-                var mutationResult = bit;
-
-                mutationRate.RunOnSuccessfulRandomPass(() =>
+                var mutatedRepresentation = r.Bits.Select(bit => 
                 {
-                    mutationResult = bit.Negate();
-                });
-                representation.Append(mutationResult);
-            }
+                    var mutationResult = bit;
 
-            return new Chromosome(representation.ToString());
+                    mutationRate.RunOnSuccessfulRandomPass(() =>
+                    {
+                        mutationResult = bit.Negate();
+                    });
+
+                    return mutationResult;
+                });
+
+                return BinaryRepresentation.Create(mutatedRepresentation);
+            });
+
+            return new Chromosome(mutatedRepresentations);
         }
     }
 }

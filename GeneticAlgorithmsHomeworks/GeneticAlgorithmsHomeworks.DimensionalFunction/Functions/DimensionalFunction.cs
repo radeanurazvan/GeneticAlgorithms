@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using GeneticAlgorithmsHomeworks.Core;
 
 namespace GeneticAlgorithmsHomeworks.Function
 {
@@ -40,7 +38,7 @@ namespace GeneticAlgorithmsHomeworks.Function
         }
 
         public double GetValue<TSetType, TToDoubleSetConverter>(
-            DimensionSet<TSetType> tuple,
+            TSetType tuple,
             TToDoubleSetConverter converter)
 
             where TToDoubleSetConverter : FunctionSetToDoubleSetConverter<TSetType>
