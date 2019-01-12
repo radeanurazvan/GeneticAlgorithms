@@ -5,58 +5,11 @@ using GeneticAlgorithmsHomeworks.Function;
 
 namespace GeneticAlgorithmsHomeworks.Homework2
 {
-    public sealed class GeneticMinimumBuilder
+    using GeneticAlgorithmsHomeworks.Genetic;
+
+    public sealed class GeneticMinimumBuilder : GeneticOrchestrator<Chromosome, BinaryRepresentation>
     {
-        private int generations;
-        private int populationSize;
-        private Rate crossoverRate;
-        private Rate mutationRate;
         private DimensionalFunction optimizingFunction;
-        private int precision;
-
-        public GeneticMinimumBuilder WithGenerations(int generations)
-        {
-            if (generations <= 0)
-            {
-                throw new InvalidOperationException("Generations number should be greater than 0!");
-            }
-
-            this.generations = generations;
-            return this;
-        }
-
-        public GeneticMinimumBuilder WithPopulationSize(int size)
-        {
-            if (size <= 0)
-            {
-                throw new InvalidOperationException("Population size should not be negative");
-            }
-
-            this.populationSize = size;
-            return this;
-        }
-
-        public GeneticMinimumBuilder WithCrossoverRate(double rate)
-        {
-            if (rate <= 0)
-            {
-                throw new InvalidOperationException("Crossover rate should be higher than 0!");
-            } 
-
-            this.crossoverRate = Rate.Create(rate);
-            return this;
-        }
-
-        public GeneticMinimumBuilder WithMutationRate(double rate)
-        {
-            if (rate <= 0)
-            {
-                throw new InvalidOperationException("Mutation rate should be higher than 0!");
-            }
-
-            this.mutationRate = Rate.Create(rate);
-            return this;
-        }
 
         public GeneticMinimumBuilder WithOptimizingFunction(DimensionalFunction function)
         {
@@ -72,38 +25,44 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 throw new InvalidOperationException("Precision should not be negative!");
             }
 
-            this.precision = precision;
+            this.optimizingFunction.Precision = precision;
             return this;
+        }
+
+        protected override FitnessFunction<Chromosome, BinaryRepresentation> GetFitness()
+        {
+            return FitnessFunction<Chromosome, BinaryRepresentation>.Create(c => this.optimizingFunction.GetValue(c, new ChromosomeToDoubleSetConverter()));
+        }
+
+        public override double GetStartingBest()
+        {
+            return double.MaxValue;
+        }
+
+        protected override Chromosome GetBestFromPopulation(Population<Chromosome, BinaryRepresentation> population)
+        {
+            var populationMinimum = population.Chromosomes.Min(c =>
+                optimizingFunction.GetValue(c, new ChromosomeToDoubleSetConverter()));
+            return population.Chromosomes.First(
+                c => optimizingFunction.GetValue(c, new ChromosomeToDoubleSetConverter()) == populationMinimum);
+        }
+
+        protected override bool IsNewCandidate(Chromosome chromosome, double currentBest)
+        {
+            var chromosomeValue = optimizingFunction.GetValue(chromosome, new ChromosomeToDoubleSetConverter());
+            return chromosomeValue < currentBest;
         }
 
         public double Build()
         {
-            var minimum = double.MaxValue;
-            optimizingFunction.Precision = precision;
-
             var population = GeneticHelper.GeneratePopulation(
                 populationSize, 
                 optimizingFunction.GetDomain(),
                 optimizingFunction.GetDimensionDefinition(), 
-                precision);
+                this.optimizingFunction.Precision);
 
-            for (var generation = 1; generation <= this.generations; generation++)
-            {
-                population = population.Mutate(mutationRate);
-                population = population.CrossOver(crossoverRate);
-                population = population.Select(
-                    new RouletteWheelSelectionStrategy(), 
-                    FitnessFunction.FromFunctionToMinimize(optimizingFunction));
-
-                var generationMinimum = population.Chromosomes.Min(c =>
-                    optimizingFunction.GetValue(c, new ChromosomeToDoubleSetConverter()));
-                if (generationMinimum < minimum)
-                {
-                    minimum = generationMinimum;
-                }
-            }
-
-            return minimum;
+            var winner = this.GetWinner(population);
+            return this.fitnessFunction.ValueFor(winner);
         }
     }
 }

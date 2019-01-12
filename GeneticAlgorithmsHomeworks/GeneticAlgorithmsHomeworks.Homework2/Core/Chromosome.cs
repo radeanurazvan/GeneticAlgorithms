@@ -6,9 +6,9 @@ namespace GeneticAlgorithmsHomeworks.Homework2
     using System;
     using System.Linq;
 
-    using GeneticAlgorithmsHomeworks.Function;
+    using GeneticAlgorithmsHomeworks.Genetic;
 
-    public class Chromosome : DimensionSet<BinaryRepresentation>
+    public class Chromosome : AbstractChromosome<BinaryRepresentation, Chromosome>
     {
         private Chromosome(IEnumerable<BinaryRepresentation> representations)
         : base(representations)
@@ -23,7 +23,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
             return new Chromosome(representations);
         }
 
-        public Chromosome Mutate(Rate mutationRate)
+        public override Chromosome Mutate(Rate mutationRate)
         {
             var mutatedRepresentations = this.Representations.Select(r => 
             {

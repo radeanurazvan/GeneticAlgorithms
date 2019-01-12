@@ -6,7 +6,7 @@ namespace GeneticAlgorithmsHomeworks.Function
 {
     public class DimensionSet<T> : IEnumerable<T>
     {
-        private readonly ICollection<T> values = new List<T>();
+        protected readonly ICollection<T> values = new List<T>();
 
         public DimensionSet(IEnumerable<T> set)
         {

@@ -21,11 +21,12 @@ namespace GeneticAlgorithmsHomeworks.Homework2
             var dimensions = new List<int> { 5, 10, 30 };
 
             var builder = new GeneticMinimumBuilder()
+                .WithPrecision(3)
                 .WithGenerations(50)
                 .WithPopulationSize(50)
                 .WithCrossoverRate(0.3)
                 .WithMutationRate(0.01)
-                .WithPrecision(3);
+                .WithCrossover(new Crossover());
 
             var numberOfExecutions = 15;
 
@@ -38,14 +39,14 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                     var accumulated = 0d;
 
                     dimensionalFunction.TrySetDimension(dimension);
-                    builder = builder.WithOptimizingFunction(dimensionalFunction);
+                    var geneticBuilder = (builder as GeneticMinimumBuilder).WithOptimizingFunction(dimensionalFunction);
 
                     var values = new List<double>();
 
                     for (var i = 1; i <= numberOfExecutions; i++)
                     {
 
-                        var value= builder.Build();
+                        var value= geneticBuilder.Build();
 
                         accumulated += value;
 
@@ -70,22 +71,6 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                     Console.WriteLine("---------------------");
                 }
             }
-        }
-
-        public void Present1()
-        {
-            var function = new SixHump();
-            function.TrySetDimension(5);
-
-            var builder = new GeneticMinimumBuilder()
-                .WithGenerations(50)
-                .WithPopulationSize(50)
-                .WithCrossoverRate(0.3)
-                .WithMutationRate(0.01)
-                .WithPrecision(3)
-                .WithOptimizingFunction(function);
-
-            Console.WriteLine(builder.Build());
         }
     }
 }

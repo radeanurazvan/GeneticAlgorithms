@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.Homework1", "GeneticAlgorithmsHomeworks.Homework1\GeneticAlgorithmsHomeworks.Homework1.csproj", "{84049110-2582-4982-9839-B05D36B6CECD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithmsHomeworks.Homework2", "GeneticAlgorithmsHomeworks.Homework2\GeneticAlgorithmsHomeworks.Homework2.csproj", "{A8AA1EB3-704A-40E9-AE57-7ACB73542C9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithmsHomeworks.Homework2", "GeneticAlgorithmsHomeworks.Homework2\GeneticAlgorithmsHomeworks.Homework2.csproj", "{A8AA1EB3-704A-40E9-AE57-7ACB73542C9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithmsHomeworks.Homework3", "GeneticAlgorithmsHomeworks.Homework3\GeneticAlgorithmsHomeworks.Homework3.csproj", "{CF880C9F-8963-4B7B-9048-353B8C242B03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithmHomeworks.Genetic", "GeneticAlgorithmHomeworks.Genetic\GeneticAlgorithmHomeworks.Genetic.csproj", "{3460B9AC-3332-4081-8B5A-EF07827FD097}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{A8AA1EB3-704A-40E9-AE57-7ACB73542C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8AA1EB3-704A-40E9-AE57-7ACB73542C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8AA1EB3-704A-40E9-AE57-7ACB73542C9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF880C9F-8963-4B7B-9048-353B8C242B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF880C9F-8963-4B7B-9048-353B8C242B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF880C9F-8963-4B7B-9048-353B8C242B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF880C9F-8963-4B7B-9048-353B8C242B03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3460B9AC-3332-4081-8B5A-EF07827FD097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3460B9AC-3332-4081-8B5A-EF07827FD097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3460B9AC-3332-4081-8B5A-EF07827FD097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3460B9AC-3332-4081-8B5A-EF07827FD097}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

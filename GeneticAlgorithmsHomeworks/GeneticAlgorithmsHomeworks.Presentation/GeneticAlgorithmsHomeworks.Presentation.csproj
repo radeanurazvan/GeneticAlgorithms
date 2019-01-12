@@ -9,6 +9,7 @@
     <ProjectReference Include="..\GeneticAlgorithmsHomeworks.Homework0\GeneticAlgorithmsHomeworks.Homework0.csproj" />
     <ProjectReference Include="..\GeneticAlgorithmsHomeworks.Homework1\GeneticAlgorithmsHomeworks.Homework1.csproj" />
     <ProjectReference Include="..\GeneticAlgorithmsHomeworks.Homework2\GeneticAlgorithmsHomeworks.Homework2.csproj" />
+    <ProjectReference Include="..\GeneticAlgorithmsHomeworks.Homework3\GeneticAlgorithmsHomeworks.Homework3.csproj" />
   </ItemGroup>
 
 </Project>

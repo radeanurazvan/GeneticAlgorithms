@@ -4,9 +4,12 @@ using GeneticAlgorithmsHomeworks.Function;
 
 namespace GeneticAlgorithmsHomeworks.Homework2
 {
+    using GeneticAlgorithmsHomeworks.Core;
+    using GeneticAlgorithmsHomeworks.Genetic;
+
     public static class GeneticHelper
     {
-        public static Population GeneratePopulation(
+        public static Population<Chromosome, BinaryRepresentation> GeneratePopulation(
             int populationSize,
             Domain domain, 
             DimensionDefinition dimensionDefinition, 
@@ -28,7 +31,7 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 population.Add(chromosome);
             }
 
-            return Population.Create(population);
+            return Population<Chromosome, BinaryRepresentation>.Create(population);
         }
     }
 }
