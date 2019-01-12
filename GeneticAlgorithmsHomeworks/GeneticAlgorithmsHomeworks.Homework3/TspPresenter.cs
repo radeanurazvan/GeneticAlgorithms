@@ -11,10 +11,10 @@
         public void Present()
         {
             var orchestrator = new TspOrchestrator()
-                .WithGenerations(50)
-                .WithPopulationSize(50)
+                .WithGenerations(300)
+                .WithPopulationSize(100)
                 .WithCrossoverRate(0.3)
-                .WithMutationRate(0.01)
+                .WithMutationRate(0.15)
                 .WithCrossover(new TspCrossover());
             var builder = new TspWinnerBuilder(orchestrator as TspOrchestrator);
 
@@ -52,13 +52,13 @@
 
             var average = accumulated / numberOfExecutions;
 
-            Console.WriteLine($"Genetic minimum path found {minimumDistance}: {bestEver.GetPath()}");
-            Console.WriteLine($"Genetic maximum path found {maximumDistance}: {worstEver.GetPath()}");
+            Console.WriteLine($"Genetic minimum path found {minimumDistance}: \n\t{bestEver.GetPath()}");
+            Console.WriteLine($"Genetic maximum path found {maximumDistance}: \n\t{worstEver.GetPath()}");
             Console.WriteLine($"Genetic average path: {average}");
 
             var deviation = Math.Sqrt(values.Sum(x => (x.GetTravelDistance() - average) * (x.GetTravelDistance() - average)) / (numberOfExecutions - 1));
             Console.WriteLine($"Genetic path standard deviation for: {deviation}");
             Console.WriteLine("---------------------");
-        }
+      }
     }
 }

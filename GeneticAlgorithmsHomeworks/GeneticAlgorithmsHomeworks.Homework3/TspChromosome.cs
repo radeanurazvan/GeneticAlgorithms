@@ -1,5 +1,6 @@
 ﻿namespace GeneticAlgorithmsHomeworks.Homework3
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -29,51 +30,18 @@
 
         public string GetPath()
         {
-            return string.Join(" - ", Genes.Select(c => c.Name));
+            return string.Join("\n\t", Genes.Select(c => c.Name));
         }
 
         public override TspChromosome Mutate(Rate mutationRate)
         {
-            var indexesToPermute = this.GetGenesToPermute(mutationRate);
-            if (indexesToPermute.Count() <= 1)
-            {
-                return this;
-            }
+            var random = new Random(DateTime.Now.Millisecond);
 
-            return new TspChromosome(this.PermuteGenes(indexesToPermute));
-        }
+            var firstIndex = random.Next() % this.Genes.Count();
+            var secondIndex = random.Next() % this.Genes.Count();
 
-        private IEnumerable<City> PermuteGenes(IEnumerable<int> indexesToPermute)
-        {
-            var permutedGenes = this.Genes.ToList();
-            for (var i = 0; i < indexesToPermute.Count() - 1; i += 2)
-            {
-                var firstIndex = indexesToPermute.ElementAt(i);
-                var secondIndex = indexesToPermute.ElementAt(i + 1);
-
-                permutedGenes = this.Permute(this.Genes, (firstIndex, secondIndex)).ToList();
-            }
-
-            return permutedGenes;
-        }
-
-        private IEnumerable<int> GetGenesToPermute(Rate mutationRate)
-        {
-            var indexToPermute = new List<int>();
-            var genesList = this.Genes.ToList();
-
-            foreach (var gene in this.Genes)
-            {
-                if (!mutationRate.DoRandomPass())
-                {
-                    continue;
-                }
-
-                var index = genesList.IndexOf(gene);
-                indexToPermute.Add(index);
-            }
-
-            return indexToPermute;
+            var permutedGenes = this.Permute(this.Genes, (firstIndex, secondIndex));
+            return new TspChromosome(permutedGenes);
         }
 
         private IEnumerable<City> Permute(IEnumerable<City> genes, (int, int) indexes)
