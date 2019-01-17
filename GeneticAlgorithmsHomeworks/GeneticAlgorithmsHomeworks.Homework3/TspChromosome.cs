@@ -1,12 +1,11 @@
-﻿namespace GeneticAlgorithmsHomeworks.Homework3
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GeneticAlgorithmsHomeworks.Core;
+using GeneticAlgorithmsHomeworks.Genetic;
+
+namespace GeneticAlgorithmsHomeworks.Homework3
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using GeneticAlgorithmsHomeworks.Core;
-    using GeneticAlgorithmsHomeworks.Genetic;
-
     public sealed class TspChromosome : AbstractChromosome<City, TspChromosome>
     {
         public TspChromosome(IEnumerable<City> set)
@@ -16,7 +15,7 @@
 
         public double GetTravelDistance()
         {
-            var travelingDistance = 0;
+            var travelingDistance = 0d;
             for (var i = 0; i < Genes.Count() - 1; i++)
             {
                 var currentCity = Genes.ElementAt(i);
@@ -35,13 +34,18 @@
 
         public override TspChromosome Mutate(Rate mutationRate)
         {
-            var random = new Random(DateTime.Now.Millisecond);
+            var mutatedGenes = this.Genes;
+            mutationRate.RunOnSuccessfulRandomPass(() =>
+            {
+                var random = new Random(DateTime.Now.Millisecond);
 
-            var firstIndex = random.Next() % this.Genes.Count();
-            var secondIndex = random.Next() % this.Genes.Count();
+                var firstIndex = random.Next() % this.Genes.Count();
+                var secondIndex = random.Next() % this.Genes.Count();
 
-            var permutedGenes = this.Permute(this.Genes, (firstIndex, secondIndex));
-            return new TspChromosome(permutedGenes);
+                mutatedGenes = this.Permute(this.Genes, (firstIndex, secondIndex));
+            });
+
+            return new TspChromosome(mutatedGenes);
         }
 
         private IEnumerable<City> Permute(IEnumerable<City> genes, (int, int) indexes)

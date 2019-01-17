@@ -34,11 +34,6 @@ namespace GeneticAlgorithmsHomeworks.Homework2
             return FitnessFunction<Chromosome, BinaryRepresentation>.Create(c => this.optimizingFunction.GetValue(c, new ChromosomeToDoubleSetConverter()));
         }
 
-        public override double GetStartingBest()
-        {
-            return double.MaxValue;
-        }
-
         protected override Chromosome GetBestFromPopulation(Population<Chromosome, BinaryRepresentation> population)
         {
             var populationMinimum = population.Chromosomes.Min(c =>
@@ -47,10 +42,12 @@ namespace GeneticAlgorithmsHomeworks.Homework2
                 c => optimizingFunction.GetValue(c, new ChromosomeToDoubleSetConverter()) == populationMinimum);
         }
 
-        protected override bool IsNewCandidate(Chromosome chromosome, double currentBest)
+        protected override bool IsBetterCandidate(Chromosome chromosome, Chromosome winner)
         {
             var chromosomeValue = optimizingFunction.GetValue(chromosome, new ChromosomeToDoubleSetConverter());
-            return chromosomeValue < currentBest;
+            var winnerValue = optimizingFunction.GetValue(chromosome, new ChromosomeToDoubleSetConverter());
+
+            return chromosomeValue < winnerValue;
         }
 
         public double Build()

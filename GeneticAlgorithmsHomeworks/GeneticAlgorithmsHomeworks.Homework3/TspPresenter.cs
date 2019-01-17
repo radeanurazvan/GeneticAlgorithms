@@ -1,24 +1,23 @@
-﻿namespace GeneticAlgorithmsHomeworks.Homework3
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GeneticAlgorithmsHomeworks.Core;
+
+namespace GeneticAlgorithmsHomeworks.Homework3
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using GeneticAlgorithmsHomeworks.Core;
-
     public sealed class TspPresenter : IHomeworkPresenter
     {
         public void Present()
         {
             var orchestrator = new TspOrchestrator()
-                .WithGenerations(300)
-                .WithPopulationSize(100)
-                .WithCrossoverRate(0.3)
+                .WithBadGenerationsLimit(5000)
+                .WithPopulationSize(50)
+                .WithCrossoverRate(0.5)
                 .WithMutationRate(0.15)
                 .WithCrossover(new TspCrossover());
             var builder = new TspWinnerBuilder(orchestrator as TspOrchestrator);
 
-            var numberOfExecutions = 5;
+            var numberOfExecutions = 30;
             var accumulated = 0d;
             var values = new List<TspChromosome>();
 
@@ -56,7 +55,7 @@
             Console.WriteLine($"Genetic maximum path found {maximumDistance}: \n\t{worstEver.GetPath()}");
             Console.WriteLine($"Genetic average path: {average}");
 
-            var deviation = Math.Sqrt(values.Sum(x => (x.GetTravelDistance() - average) * (x.GetTravelDistance() - average)) / (numberOfExecutions - 1));
+            var deviation = Math.Sqrt(values.Sum(x => Math.Pow(x.GetTravelDistance() - average, 2)) / (numberOfExecutions - 1));
             Console.WriteLine($"Genetic path standard deviation for: {deviation}");
             Console.WriteLine("---------------------");
       }

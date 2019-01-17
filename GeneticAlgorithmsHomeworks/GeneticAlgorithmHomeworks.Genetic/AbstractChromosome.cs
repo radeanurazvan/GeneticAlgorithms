@@ -1,10 +1,9 @@
-﻿namespace GeneticAlgorithmsHomeworks.Genetic
+﻿using System.Collections.Generic;
+using GeneticAlgorithmsHomeworks.Core;
+using GeneticAlgorithmsHomeworks.Function;
+
+namespace GeneticAlgorithmsHomeworks.Genetic
 {
-    using System.Collections.Generic;
-
-    using GeneticAlgorithmsHomeworks.Core;
-    using GeneticAlgorithmsHomeworks.Function;
-
     public abstract class AbstractChromosome<TGene, TChromosome> : DimensionSet<TGene>
     {
         protected AbstractChromosome(IEnumerable<TGene> set)

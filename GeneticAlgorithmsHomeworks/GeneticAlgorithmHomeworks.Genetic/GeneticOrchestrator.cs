@@ -14,12 +14,11 @@ namespace GeneticAlgorithmsHomeworks.Genetic
         private Rate crossoverRate;
         private Rate mutationRate;
 
-        private double startingBest;
         private AbstractCrossover<TChromosome, TGene> crossover;
+        private int badGenerationsLimit;
 
         protected GeneticOrchestrator()
         {
-            this.startingBest = this.GetStartingBest();
             this.fitnessFunction = this.GetFitness();
         }
 
@@ -42,6 +41,17 @@ namespace GeneticAlgorithmsHomeworks.Genetic
             }
 
             this.generations = generations;
+            return this;
+        }
+
+        public GeneticOrchestrator<TChromosome, TGene> WithBadGenerationsLimit(int limit)
+        {
+            if (limit <= 0)
+            {
+                throw new InvalidOperationException("Bad generations limit number should be greater than 0!");
+            }
+
+            this.badGenerationsLimit = limit;
             return this;
         }
 
@@ -69,8 +79,6 @@ namespace GeneticAlgorithmsHomeworks.Genetic
 
         protected abstract FitnessFunction<TChromosome, TGene> GetFitness();
 
-        public abstract double GetStartingBest();
-
         public GeneticOrchestrator<TChromosome, TGene> WithCrossover(AbstractCrossover<TChromosome, TGene> crossver)
         {
             this.crossover =
@@ -81,29 +89,76 @@ namespace GeneticAlgorithmsHomeworks.Genetic
 
         protected abstract TChromosome GetBestFromPopulation(Population<TChromosome, TGene> population);
 
-        protected abstract bool IsNewCandidate(TChromosome chromosome, double currentBest);
+        protected abstract bool IsBetterCandidate(TChromosome chromosome, TChromosome currentWinner);
 
         public TChromosome GetWinner(Population<TChromosome, TGene> population)
         {
-            TChromosome winner = null;
-            var currentBest = this.startingBest;
             var selectionStrategy = new RouletteWheelSelectionStrategy<TChromosome, TGene>();
 
-            for (var generation = 1; generation <= this.generations; generation++)
+            return this.RunGenetic(() =>
             {
                 population = population.Mutate(mutationRate);
                 population = population.CrossOver(crossoverRate, this.crossover);
                 population = population.Select(selectionStrategy, this.fitnessFunction);
 
                 var bestGenerationChromosome = GetBestFromPopulation(population);
-                if (this.IsNewCandidate(bestGenerationChromosome, currentBest))
+                return bestGenerationChromosome;
+            });
+        }
+
+        private TChromosome RunGenetic(Func<TChromosome> genetic)
+        {
+            var winner = genetic();
+
+            void OnNewCandidate(TChromosome candidate)
+            {
+                if (IsBetterCandidate(candidate, winner))
                 {
-                    currentBest = this.fitnessFunction.ValueFor(bestGenerationChromosome);
-                    winner = bestGenerationChromosome;
+                    winner = candidate;
                 }
             }
 
+            if (this.generations > 0)
+            {
+                RunUntilGenerationsRunOut(genetic, OnNewCandidate);
+            }
+
+            if (this.badGenerationsLimit > 0)
+            {
+                RunUntilBadGenerationsGetExhausted(genetic, OnNewCandidate);
+            }
+
             return winner;
+        }
+
+        private void RunUntilGenerationsRunOut(Func<TChromosome> genetic, Action<TChromosome> onCandidateReceived)
+        {
+            for (var generation = 1; generation <= generations; generation++)
+            {
+                var candidate = genetic();
+                onCandidateReceived(candidate);
+            }
+        }
+
+        private void RunUntilBadGenerationsGetExhausted(Func<TChromosome> genetic, Action<TChromosome> onCandidateReceived)
+        {
+            var winner = genetic();
+            var candidatesExhausted = false;
+
+            var badGenerations = 0;
+
+            while (badGenerations != badGenerationsLimit)
+            {
+                var newCandidate = genetic();
+                onCandidateReceived(newCandidate);
+
+                badGenerations++;
+                if (IsBetterCandidate(newCandidate, winner))
+                {
+                    winner = newCandidate;
+                    badGenerations = 0;
+                }
+            }
         }
     }
 }
