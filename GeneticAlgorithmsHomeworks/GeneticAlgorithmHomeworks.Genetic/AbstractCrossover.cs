@@ -8,6 +8,7 @@
         where TChromosome : AbstractChromosome<TGene, TChromosome>
     {
         protected abstract (TChromosome, TChromosome) DoCrossoverCore(
+            int cutPoint,
             (IEnumerable<TGene> leftCut, IEnumerable<TGene> rightCut) first,
             (IEnumerable<TGene> leftCut, IEnumerable<TGene> rightCut) second);
 
@@ -21,7 +22,7 @@
             var secondLeftCut = second.Genes.TakeWhile((bit, index) => index != cut);
             var secondRightCut = second.Genes.Except(secondLeftCut);
 
-            var result = DoCrossoverCore((firstLeftCut, firstRightCut), (secondLeftCut, secondRightCut));
+            var result = DoCrossoverCore(cut, (firstLeftCut, firstRightCut), (secondLeftCut, secondRightCut));
 
             return new CrossoverResult<TChromosome, TGene>(result.Item1, result.Item2);
         }

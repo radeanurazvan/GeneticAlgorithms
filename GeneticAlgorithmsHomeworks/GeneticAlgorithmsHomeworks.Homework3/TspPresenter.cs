@@ -12,8 +12,8 @@ namespace GeneticAlgorithmsHomeworks.Homework3
             var orchestrator = new TspOrchestrator()
                 .WithBadGenerationsLimit(5000)
                 .WithPopulationSize(50)
-                .WithCrossoverRate(0.5)
-                .WithMutationRate(0.15)
+                .WithCrossoverRate(0.9)
+                .WithMutationRate(0.05)
                 .WithCrossover(new TspCrossover());
             var builder = new TspWinnerBuilder(orchestrator as TspOrchestrator);
 

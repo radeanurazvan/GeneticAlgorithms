@@ -1,14 +1,14 @@
-﻿namespace GeneticAlgorithmsHomeworks.Homework2
+﻿using System.Collections.Generic;
+using System.Linq;
+using GeneticAlgorithmsHomeworks.Core;
+using GeneticAlgorithmsHomeworks.Genetic;
+
+namespace GeneticAlgorithmsHomeworks.Homework2
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using GeneticAlgorithmsHomeworks.Core;
-    using GeneticAlgorithmsHomeworks.Genetic;
-
     public class Crossover : AbstractCrossover<Chromosome, BinaryRepresentation>
     {
         protected override (Chromosome, Chromosome) DoCrossoverCore(
+            int cutPoint,
             (IEnumerable<BinaryRepresentation> leftCut, IEnumerable<BinaryRepresentation> rightCut) first,
             (IEnumerable<BinaryRepresentation> leftCut, IEnumerable<BinaryRepresentation> rightCut) second)
         {
